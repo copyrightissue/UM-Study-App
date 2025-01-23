@@ -1,8 +1,8 @@
-# Name Pending!
+# Study Buddy!
 Note, 
 If anyone is missing, email me @ ws160964@umconnect.umt.edu
 
-
+Link to Group Discord for collaberation: https://discord.gg/7fr3ZPPM 
 # Concept
 Students should be able to view incoming exams, submitted by students and verified by teachers/TA's, and arrange studytimes based on either availability or suggested timeslots.
 Secondary to exam scheduling and class studying should be forum page functionality, allowing students to talk about class topics, request help, share notes, and soforth.
