@@ -1,4 +1,4 @@
-# Name Pending!
+# StudyBuddy
 Note, 
 If anyone is missing, email me @ ws160964@umconnect.umt.edu
 
