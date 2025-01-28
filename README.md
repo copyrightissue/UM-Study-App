@@ -4,9 +4,19 @@ Note,
 If anyone is missing, email me @ ws160964@umconnect.umt.edu
 
 Link to Group Discord for collaberation: https://discord.gg/7fr3ZPPM 
-# Concept
-Students should be able to view incoming exams, submitted by students and verified by teachers/TA's, and arrange studytimes based on either availability or suggested timeslots.
-Secondary to exam scheduling and class studying should be forum page functionality, allowing students to talk about class topics, request help, share notes, and soforth.
+
+# Problem Statement
+Students will be able to keep track of upcoming exams and assignments with help from other students and teachers/TA's. They can also arrange study times in a calendar by finding overlapping availability times. There will be a forum for students to talk about class topics, request help, share notes, etc. As an incentive to be a credible users, there will be a point system that awards points to users when they attend study events, share notes, answer questions correctly, etc. Then, when users post an event like an upcoming test, users with more points can be considered more credible.
+
+# Target Users 
+The target users are students and Professors/TAs. Students are mainly using the app for help with classes, and Professors/TAs are using it to share their availability, answer questions in the forum, and verify events posted by students. 
+
+# Key Feature
+Key Feature 1: A calendar where users can post their availability and view other users' availability. Potentially, scheduling may happen in the calendar as well.
+
+Key Feature 2: 
+
+Key Feature 3: 
 
 Each student should: 
 - Contain attributes that declare their **enrolled courses**, or courses they have a relation to (e.g., Instructor/TA access). This specifies what events they can either **create or join on the calender.**
