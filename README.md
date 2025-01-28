@@ -18,4 +18,4 @@ Events are:
 - **Aggregate student availability** based on freetime, allowing better setup and arrangement of study sessions by users.
 
 # RACI Matrix
-(Click here to view Matirx)[https://umconnectumt-my.sharepoint.com/:x:/g/personal/co203478_umconnect_umt_edu/ERfprmCjOOVGu49aVgMHzZoBoFenHxLvq8Huw3K23HaogQ?e=cNGKJi]
+[Click here to view Matirx](https://umconnectumt-my.sharepoint.com/:x:/g/personal/co203478_umconnect_umt_edu/ERfprmCjOOVGu49aVgMHzZoBoFenHxLvq8Huw3K23HaogQ?e=cNGKJi)
