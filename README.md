@@ -20,8 +20,9 @@ Key Feature 3: An assignment and exam tracker that shows upcoming work.
 
 Key Feature 4: An option to make flashcards that include quizzes and study independently or with others.
 
-# RACI Matrix
-[Click here to view Matirx](https://umconnectumt-my.sharepoint.com/:x:/g/personal/co203478_umconnect_umt_edu/ERfprmCjOOVGu49aVgMHzZoBoFenHxLvq8Huw3K23HaogQ?e=cNGKJi) 
+# Excel Sheet
+This includes our Requirement Specifications, Use Cases, RACI matrix, and Class Activities. 
+[Click here to view Excel Sheet](https://umconnectumt-my.sharepoint.com/:x:/g/personal/co203478_umconnect_umt_edu/ERfprmCjOOVGu49aVgMHzZoBoFenHxLvq8Huw3K23HaogQ?e=cNGKJi) 
 
 # Additonal notes for development: 
 Each student should: 
