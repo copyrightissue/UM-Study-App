@@ -6,7 +6,7 @@ If anyone is missing, email me @ ws160964@umconnect.umt.edu
 Link to Group Discord for collaberation: https://discord.gg/7fr3ZPPM 
 
 # Problem Statement
-The problem we aim to solve with software is helping students study better. We hope to achieve this by connecting students, professors, and TAs, tracking assignments and exams, and offering flashcards/quizzes. To help users meet up, the app will have a calendar where users can share their availability and potentially schedule meetings or study groups there. There will also be a forum where students can ask questions about assignments or exams and get answers from other students, professors, and TAs. Our app will also include a tracking feature for upcoming exams and assignments to help students stay organized. To make the app more fun, we're thinking of adding a flashcard and quiz option. Flashcards could be studied in flashcard mode or quiz mode independently or in a group quiz mode similar to Kahoot. 
+The problem we aim to solve with software is helping students study better. We hope to achieve this by connecting students, professors, and TAs, tracking assignments and exams, notesharing, and offering flashcards. 
 
 # Target Users 
 The target users are students, professors, and TAs. 
@@ -18,7 +18,9 @@ Key Feature 2: A forum for students, professors, and TAs to chat.
 
 Key Feature 3: An assignment and exam tracker that shows upcoming work. 
 
-Key Feature 4: An option to make flashcards that include quizzes and study independently or with others.
+Key Feature 4: An option to make flashcards.
+
+Key Feature 5: An option for notesharing.
 
 # Excel Sheet
 This includes our Requirement Specifications, Use Cases, RACI matrix, and Class Activities. 
