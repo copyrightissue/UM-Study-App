@@ -1,10 +1,10 @@
 # Study Buddy!
 
-Kenneth, Bethany, Jake - **Front End**
-Aaron, Cass - **Backend**
-Gavin, Tim - **QA Testing**
-Chris - **DevOPs**
-Weslee - **Lead**
+Kenneth, Bethany, Jake - **Front End**  
+Aaron, Cass - **Backend**  
+Gavin, Tim - **QA Testing**  
+Chris - **DevOPs**  
+Weslee - **Lead**  
 
 # Problem Statement
 The problem we aim to solve with software is helping students study better. We aim to achieve this through the development of collaborative notes, scheduled meetings, and functional rating systems all supervised by teachers.
