@@ -1,12 +1,13 @@
 # Study Buddy!
 
-Note, 
-If anyone is missing, email me @ ws160964@umconnect.umt.edu
-
-Link to Group Discord for collaberation: https://discord.gg/7fr3ZPPM 
+Kenneth, Bethany, Jake - **Front End**
+Aaron, Cass - **Backend**
+Gavin, Tim - **QA Testing**
+Chris - **DevOPs**
+Weslee - **Lead**
 
 # Problem Statement
-The problem we aim to solve with software is helping students study better. We hope to achieve this by connecting students, professors, and TAs, tracking assignments and exams, notesharing, and offering flashcards. 
+The problem we aim to solve with software is helping students study better. We aim to achieve this through the development of collaborative notes, scheduled meetings, and functional rating systems all supervised by teachers.
 
 # Target Users 
 The target users are students, professors, and TAs. 
