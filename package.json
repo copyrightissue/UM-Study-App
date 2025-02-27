@@ -1,5 +1,15 @@
 {
+  "name": "functions",
+  "version": "1.0.0",
+  "scripts": {
+    "serve": "firebase emulators:start --only functions",
+    "deploy": "firebase deploy --only functions",
+    "test": "jest"
+  },
   "dependencies": {
     "firebase": "^11.2.0"
+  },
+  "devDependencies": {
+    "jest": "^29.5.0"
   }
 }

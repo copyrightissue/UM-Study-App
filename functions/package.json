@@ -20,7 +20,8 @@
     "jsonwebtoken": "^9.0.2"
   },
   "devDependencies": {
-    "firebase-functions-test": "^3.1.0"
+    "firebase-functions-test": "^3.1.0",
+    "jest": "^29.7.0"
   },
   "private": true
 }
