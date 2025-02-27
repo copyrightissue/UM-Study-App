@@ -1,0 +1,36 @@
+name: CI/CD for Firebase
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  test-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+
+      - name: Install dependencies
+        run: |
+          cd functions
+          npm install
+
+      - name: Run Tests
+        run: |
+          cd functions
+          npm test
+
+      - name: Deploy to Firebase
+        if: success()  # only run deploy if tests pass
+        uses: w9jds/firebase-action@v2.2.0
+        with:
+          args: deploy --only functions
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
