@@ -34,7 +34,7 @@ jobs:
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
           FIREBASE_PROJECT: studybuddy-1b01f
-          with:
-            target: hosting,functions
+        with:
+          target: hosting,functions
 
 
