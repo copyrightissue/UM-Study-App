@@ -1,6 +1,6 @@
 # Study Buddy!
 
-![CI/CD](https://github.com/WesleeS/UM-Study-App/actions/workflows/test.yml/badge.svg)
+![CI/CD](https://github.com/WesleeS/UM-Study-App/actions/workflows/main.yml/badge.svg)
 
 Kenneth, Bethany, Jake - **Front End**  
 Aaron, Cass - **Backend**  
