@@ -3,10 +3,14 @@ name: CI/CD for Firebase
 on:
   push:
     branches: [ "main" ]
-
+permissions: read-all
 jobs:
   test-and-deploy:
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      id-token: write
 
     steps:
       - name: Check out repository
@@ -30,10 +34,13 @@ jobs:
 
       - name: Deploy to Firebase
         if: success()  # only run deploy if tests pass
-        uses: elmarti/deploy-firebase@first-release
-        env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-          FIREBASE_PROJECT: studybuddy-1b01f
-        
+        uses: sws2apps/firebase-deployment@main #consider using pin for dependabot auto update
+        with:
+          workloadIdentityProvider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
+          serviceAccount: ${{ secrets.SERVICE_ACCOUNT }}
+          function: true #optional & boolean
+          hosting: true #optional & boolean
+          project: studybuddy-1b01f #required
+
 
 
