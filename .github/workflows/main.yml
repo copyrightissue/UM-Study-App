@@ -27,18 +27,12 @@ jobs:
           cd functions
           npm test
 
-      - name: Install Firebase CLI
-        run: npm install -g firebase-tools
-
-      - name: Authenticate to Firebase
-        run: firebase login:ci 
-        env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-
       - name: Deploy to Firebase
         if: success()  # only run deploy if tests pass
-        uses: w9jds/firebase-action@v2.2.0
-        with:
-          args: deploy --only functions --debug
+        uses: elmarti/deploy-firebase@first-release
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+          FIREBASE_PROJECT: studybuddy-1b01f
+
 
 
