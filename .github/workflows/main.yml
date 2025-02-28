@@ -30,11 +30,10 @@ jobs:
 
       - name: Deploy to Firebase
         if: success()  # only run deploy if tests pass
-        uses: elmarti/deploy-firebase-functions@v0.1.1
+        uses: elmarti/deploy-firebase@first-release
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
           FIREBASE_PROJECT: studybuddy-1b01f
-        with:
-          target: hosting,functions
+        
 
 
