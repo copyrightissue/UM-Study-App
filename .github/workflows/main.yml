@@ -30,7 +30,7 @@ jobs:
 
       - name: Deploy to Firebase
         if: success()  # only run deploy if tests pass
-        uses: ProgrammerPeter2/deploy-firebase-functions@v0.1.1
+        uses: elmarti/deploy-firebase-functions@v0.1.1
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
           FIREBASE_PROJECT: studybuddy-1b01f
