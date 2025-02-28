@@ -9,7 +9,7 @@ admin.initializeApp();
 const db = admin.firestore();
 
 // Secret key for JWT authentication (from Firebase Config or .env)
-const SECRET_KEY = functions.config().auth?.secret || process.env.SECRET_KEY;
+const SECRET_KEY = process.env.SECRET_KEY;
 
 if (!SECRET_KEY) {
     console.error("ERROR: Secret key is missing. Set it using Firebase Config or .env.");
