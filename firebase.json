@@ -13,7 +13,7 @@
     }
   ],
   "hosting": {
-    "public": "public",
+    "public": "um-study-app/out",
     "ignore": [
       "firebase.json",
       "**/.*",
