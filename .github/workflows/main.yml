@@ -25,9 +25,12 @@ jobs:
           cd functions
           npm test
 
+      - name: Install Firebase Tools globally
+        run: npm install -g firebase-tools
+
       - name: Deploy to Firebase
         if: success()
         run: |
-          npx firebase deploy --only functions,hosting
+          firebase deploy --only functions,hosting
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
