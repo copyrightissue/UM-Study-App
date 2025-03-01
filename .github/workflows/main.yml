@@ -27,8 +27,7 @@ jobs:
 
       - name: Deploy to Firebase
         if: success()
-        uses: w9jds/firebase-action@v2.2.0
-        with:
-          args: deploy --only functions,hosting
+        run: |
+          npx firebase deploy --only functions,hosting
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
