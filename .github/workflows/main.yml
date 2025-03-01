@@ -15,10 +15,10 @@ jobs:
         with:
           node-version: 18
 
-      - name: Install GCloud SDK
+      - name: Install GCloud CLI
         run: |
           sudo apt-get update
-          sudo apt-get install -y google-cloud-sdk
+          sudo apt-get install -y google-cloud-cli
 
       - name: Auth with GCP
         run: |
