@@ -20,9 +20,9 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y google-cloud-cli
 
-      - name: Auth with GCP
+      - name: Decode and write SA key
         run: |
-          echo "${{ secrets.GCLOUD_SA_KEY }}" > /tmp/key.json
+          echo "${{ secrets.GCLOUD_SA_KEY_B64 }}" | base64 --decode > /tmp/key.json
           gcloud auth activate-service-account --key-file=/tmp/key.json
           gcloud config set project studybuddy-1b01f
 
