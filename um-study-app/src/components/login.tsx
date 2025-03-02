@@ -36,7 +36,7 @@ const StudyBuddyLogin = () => {
         {/* New Account Link */}
         <p className="mt-4 text-center text-gray-600">
           If you do not have an account, click the link here:{" "}
-          <a href="/signup" className="text-blue-500 underline">
+          <a href="/signup.html" className="text-blue-500 underline">
             New Account
           </a>
         </p>
