@@ -1,48 +1,53 @@
 import React from "react";
+import styles from "../styles/Login.module.css"; // Import CSS Module
 
 const StudyBuddyLogin = () => {
-  return (
-    <div className="flex justify-center items-center h-screen bg-gray-100">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-[400px] border">
-        {/* Logo */}
-        <div className="text-center mb-4">
-          <h1 className="text-2xl font-bold text-blue-600 flex items-center justify-center gap-2">
-            <span role="img" aria-label="book">📘</span> Study Buddy
-          </h1>
+    return (
+        <div className={styles.loginContainer}>
+            <div className={styles.logo}>
+                <h1>
+                    <span role="img" aria-label="book">📘</span> Study Buddy
+                </h1>
+            </div>
+
+            <div className={styles.loginBox}>
+                {/* Study Buddy App welcome */}
+                <p className={styles.welcomeMessage}>
+                    Welcome to Study Buddy!
+                </p>
+
+                {/* Login with NetID and Password */}
+                <div className={styles.formContainer}>
+                    <div className={styles.inputWrapper}>
+                        <label className={styles.inputLabel}>NetID:</label>
+                        <input
+                            type="text"
+                            className={styles.inputField}
+                            placeholder="Enter NetID"
+                        />
+                    </div>
+
+                    <div className={styles.inputWrapper}>
+                        <label className={styles.inputLabel}>Password:</label>
+                        <input
+                            type="password"
+                            className={styles.inputField}
+                            placeholder="Enter Password"
+                        />
+                    </div>
+
+                    {/* Login Button(currently links to nothing) */}
+                    <button className={styles.loginButton}>Login</button>
+                </div>
+
+                {/* New Account Link */}
+                <p className={styles.newAccountLink}>
+                    If you do not have an account, click the link here:{" "}
+                    <a href="/signup" className={styles.noUnderline}>New Account</a>
+                </p>
+            </div>
         </div>
-
-        {/* Welcome Message */}
-        <p className="text-center text-gray-700">
-          Welcome to <span className="text-blue-500">Study Buddy</span>!
-        </p>
-
-        {/* Login Form */}
-        <div className="mt-4">
-          <label className="block text-lg font-semibold">StudentID:</label>
-          <input
-            type="text"
-            className="w-full px-3 py-2 mt-1 border rounded-md bg-gray-200"
-            placeholder="Enter StudentID"
-          />
-
-          <label className="block text-lg font-semibold mt-3">Password:</label>
-          <input
-            type="password"
-            className="w-full px-3 py-2 mt-1 border rounded-md bg-gray-200"
-            placeholder="Enter Password"
-          />
-        </div>
-
-        {/* New Account Link */}
-        <p className="mt-4 text-center text-gray-600">
-          If you do not have an account, click the link here:{" "}
-          <a href="/signup" className="text-blue-500 underline">
-            New Account
-          </a>
-        </p>
-      </div>
-    </div>
-  );
+    );
 };
 
 export default StudyBuddyLogin;
