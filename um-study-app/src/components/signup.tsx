@@ -24,12 +24,12 @@ const SignUp: React.FC = () => {
     try {
 
       // or if you set up rewrites: "/api/signupUser"
-      const functionURL = process.env.NODE_ENV === "development"
-      ? "http://127.0.0.1:5001/studybuddy-1b01f/us-central1/signupUser"
-      : "https://signupuser-jre67bdmmq-uc.a.run.app";
+      // const functionURL = process.env.NODE_ENV === "development"
+      // ? "http://127.0.0.1:5001/studybuddy-1b01f/us-central1/signupUser"
+      // : "https://us-central1-studybuddy-1b01f.cloudfunctions.net/signupUser";
 
       // 2) Make a POST request with the form data
-      const response = await fetch(functionURL, {
+      const response = await fetch("/api/signupUser", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
