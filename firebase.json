@@ -18,6 +18,16 @@
       "firebase.json",
       "**/.*",
       "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "/api/signupUser",
+        "function": "signupUser"
+      },
+      {
+        "source": "/api/loginUser",
+        "function": "loginUser"
+      }
     ]
   }
 }

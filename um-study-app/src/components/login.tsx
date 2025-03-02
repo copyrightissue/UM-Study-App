@@ -12,9 +12,9 @@ const StudyBuddyLogin = () => {
     e.preventDefault();
 
     try {
-      const functionURL = "https://loginuser-jre67bdmmq-uc.a.run.app";
+      // const functionURL = "https://us-central1-studybuddy-1b01f.cloudfunctions.net/loginUser";
 
-      const response = await fetch(functionURL, {
+      const response = await fetch("/api/loginUser", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
