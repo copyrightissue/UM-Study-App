@@ -17,10 +17,52 @@ const SignUp: React.FC = () => {
   };
 
   // Handle form submission
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form Submitted", formData);
-    // Send form data to our amazing incredible backend team
+    // console.log("Form Submitted", formData);
+    // Send form data to our amazing incredible backend team (flattery gets you everywhere)
+    try {
+
+      // or if you set up rewrites: "/api/signupUser"
+      const functionURL = process.env.NODE_ENV === "development"
+      ? "http://127.0.0.1:5001/studybuddy-1b01f/us-central1/signupUser"
+      : "https://signupuser-jre67bdmmq-uc.a.run.app";
+
+      // 2) Make a POST request with the form data
+      const response = await fetch(functionURL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          fullName: formData.fullName,
+          studentID: formData.netID,   //  "studentID" if your function expects that
+          password: formData.password,
+          classes: [],                // or some default classes array if needed
+          role: formData.role,
+          email: formData.email
+        })
+      });
+
+      if (!response.ok) {
+        // e.g. 400 or 500
+        const errorData = await response.json();
+        alert(`Signup failed: ${errorData.message || errorData.error}`);
+        return;
+      }
+
+      // 3) Handle success
+      const data = await response.json();
+      console.log("Signup success:", data);
+      alert("Signup successful!");
+      // Possibly redirect to login page:
+      // router.push("/") or window.location.href = "/"
+      window.location.href = "/";
+
+    } catch (err) {
+      console.error("Error calling signup function:", err);
+      alert("An error occurred during signup.");
+    }
   };
 
   return (
