@@ -38,10 +38,10 @@ jobs:
           cd functions
           npm install
 
-          - name: Run Tests and Generate Coverage Report
-          run: |
-            cd functions
-            npm test -- --coverage
+      - name: Run Tests and Generate Coverage Report
+        run: |
+          cd functions
+          npm test -- --coverage
             
       - name: Upload Jest Coverage Report
         uses: actions/upload-artifact@v4
