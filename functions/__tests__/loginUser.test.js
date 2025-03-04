@@ -108,7 +108,7 @@ describe("loginUser", () => {
         expect(res.json).toHaveBeenCalledWith({ message: "User not found." });
     });
 
-    it("should return 400 if email or password is missing", async () => {
+    test("should return 400 if email or password is missing", async () => {
         const req = {
             body: {
                 email: "test@test.com",  // Missing password
@@ -150,7 +150,7 @@ describe("loginUser", () => {
         });
     });
 
-    it("should return 400 if user profile is missing in Firestore", async () => {
+    test("should return 400 if user profile is missing in Firestore", async () => {
         const req = {
             body: {
                 email: "test@test.com",
@@ -175,7 +175,7 @@ describe("loginUser", () => {
         });
     });
 
-    it("should return 500 if JWT token generation fails", async () => {
+    test("should return 500 if JWT token generation fails", async () => {
         const req = {
             body: {
                 email: "test@test.com",
