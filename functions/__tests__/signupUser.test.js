@@ -30,7 +30,7 @@ jest.mock("firebase-admin", () => {
 });
 
 describe("signupUser", () => {
-    it("should create a new user", async () => {
+    test("should create a new user", async () => {
         const req = {
             body: {
                 fullName: "John Doe",
@@ -64,7 +64,7 @@ describe("signupUser", () => {
         });
     });
 
-    it("should return 400 when email already exists", async () => {
+    test("should return 400 when email already exists", async () => {
         const req = {
             body: {
                 fullName: "John Doe",
@@ -96,7 +96,7 @@ describe("signupUser", () => {
             message: "Email already in use.",
         });
     });
-    it("should return 400 for missing required fields", async () => {
+    test("should return 400 for missing required fields", async () => {
         const req = {
             body: {
                 email: "test@test.com",
