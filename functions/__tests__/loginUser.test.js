@@ -4,6 +4,13 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { loginUser } = require("../index");
 
+// Mock the serviceAccount file import
+jest.mock("../studybuddy-1b01f-firebase-adminsdk.json", () => ({
+    projectId: "studybuddy-1b01f",
+    privateKey: "fake-private-key",
+    clientEmail: "fake-client-email"
+}), { virtual: true });
+
 // Mock Firebase Admin and related libraries
 jest.mock("firebase-admin", () => {
     const firestoreMock = {
@@ -13,23 +20,23 @@ jest.mock("firebase-admin", () => {
     };
 
     const authMock = {
-        getUserByEmail: jest.fn()
+        getUserByEmail: jest.fn(),
+        createCustomToken: jest.fn()
     };
 
     return {
         initializeApp: jest.fn(),
         firestore: jest.fn(() => firestoreMock),
-        auth: jest.fn(() => authMock)
+        auth: jest.fn(() => authMock),
+        credential: {
+            cert: jest.fn(() => "mocked-credential")
+        }
     };
 });
 
-// Mock bcrypt and jwt
+// Mock bcrypt
 jest.mock("bcryptjs", () => ({
     compare: jest.fn()
-}));
-
-jest.mock("jsonwebtoken", () => ({
-    sign: jest.fn()
 }));
 
 describe("loginUser", () => {
@@ -59,7 +66,7 @@ describe("loginUser", () => {
         });
 
         bcrypt.compare.mockResolvedValue(true);
-        jwt.sign.mockReturnValue("mocked-token");
+        mockAuth.createCustomToken.mockResolvedValue("mocked-custom-token");
     });
 
     test("should login a user successfully", async () => {
@@ -81,7 +88,7 @@ describe("loginUser", () => {
         expect(res.status).toHaveBeenCalledWith(200);
         expect(res.json).toHaveBeenCalledWith(expect.objectContaining({
             message: "Login successful",
-            token: "mocked-token"
+            idToken: "mocked-custom-token"
         }));
     });
 
@@ -98,7 +105,7 @@ describe("loginUser", () => {
             json: jest.fn()
         };
 
-        // Mock getUserByEmail to simulate a non-existing user
+        // Mock getUserByEmail to return null (simulating user not found)
         mockAuth.getUserByEmail.mockResolvedValue(null);
 
         await loginUser(req, res);
@@ -107,6 +114,7 @@ describe("loginUser", () => {
         expect(res.status).toHaveBeenCalledWith(400);
         expect(res.json).toHaveBeenCalledWith({ message: "User not found." });
     });
+
 
     test("should return 400 if email or password is missing", async () => {
         const req = {
@@ -175,7 +183,7 @@ describe("loginUser", () => {
         });
     });
 
-    test("should return 500 if JWT token generation fails", async () => {
+    test("should return 500 for unexpected errors", async () => {
         const req = {
             body: {
                 email: "test@test.com",
@@ -187,10 +195,8 @@ describe("loginUser", () => {
             json: jest.fn(),
         };
 
-        // Simulate JWT error
-        jwt.sign.mockImplementation(() => {
-            throw new Error("JWT generation error");
-        });
+        // Simulate an unexpected error
+        mockAuth.getUserByEmail.mockRejectedValue(new Error("Unexpected error"));
 
         await loginUser(req, res);
 
