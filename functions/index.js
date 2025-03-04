@@ -21,6 +21,7 @@ if (!SECRET_KEY) {
  */
 exports.signupUser = functions.https.onRequest(async (req, res) => {
     try {
+
         const { fullName, studentID, password, classes, role, email } = req.body;
 
         if (!email || !password || !fullName || !studentID || !role || !Array.isArray(classes)) {
@@ -90,6 +91,7 @@ exports.loginUser = functions.https.onRequest(async (req, res) => {
         if (!passwordMatch) {
             return res.status(401).json({ message: "Invalid password." });
         }
+
 
         // Generate JWT token
         const token = jwt.sign({ uid: userRecord.uid, role: userData.role }, SECRET_KEY, { expiresIn: "1h" });
