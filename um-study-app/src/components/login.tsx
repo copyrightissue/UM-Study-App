@@ -18,7 +18,6 @@ const StudyBuddyLogin = () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-
           email: credentials.email,
           password: credentials.password
         })
@@ -64,7 +63,7 @@ const StudyBuddyLogin = () => {
           gap: "8px",
         }}
       >
-        <span role="img" aria-label="book">📘</span> Study Buddy 1.0
+        <span role="img" aria-label="book">📘</span> Study Buddy
       </h1>
   
       {/* Welcome Message */}
@@ -74,7 +73,7 @@ const StudyBuddyLogin = () => {
   
       {/* Login Form */}
       <form onSubmit={handleSubmit} style={{ marginTop: "16px", width: "100%", maxWidth: "400px" }}>
-        <label style={{ fontSize: "1.125rem", fontWeight: "600", textAlign: "left"}}>NetID:</label>
+        <label style={{ fontSize: "1.125rem", fontWeight: "600", textAlign: "left"}}>Email:</label>
         <input
           type="text"
           style={{
@@ -89,7 +88,7 @@ const StudyBuddyLogin = () => {
           name="email"
           value={credentials.email}
           onChange={handleChange}
-          placeholder="Enter NetID"
+          placeholder="Enter Email"
         />
   
         <label style={{ fontSize: "1.125rem", fontWeight: "600", display: "block"}}>Password:</label>

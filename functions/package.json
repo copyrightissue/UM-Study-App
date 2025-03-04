@@ -7,7 +7,8 @@
     "start": "npm run shell",
     "deploy": "firebase deploy --only functions",
     "logs": "firebase functions:log",
-    "test": "jest"
+    "test": "jest",
+    "coverage": "nyc --reporter=html --reporter=text npm test"
   },
   "engines": {
     "node": "18"
@@ -22,6 +23,7 @@
   },
   "devDependencies": {
     "firebase-functions-test": "^3.1.0",
+    "nyc": "^15.1.0",
     "jest": "^29.7.0"
   },
   "private": true
