@@ -67,6 +67,3 @@ functions/.env
 
 # dataconnect generated files
 .dataconnect
-
-#Firebase admin SDK file
-studybuddy-1b01f-firebase-adminsdk-fbsvc-5a752ef825.json
