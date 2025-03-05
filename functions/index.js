@@ -36,7 +36,7 @@ exports.signupUser = functions.https.onRequest(async (req, res) => {
             displayName: fullName
         });
 
-        // Store user profile in Firestore using user.uid as the document ID
+        // Store user profile in Firestore using user.uid as the document ID (key)
         await db.collection("users").doc(user.uid).set({
             fullName,
             studentID,
@@ -84,7 +84,7 @@ exports.loginUser = functions.https.onRequest(async (req, res) => {
             return res.status(401).json({ message: "Invalid password." });
         }
 
-        // Instead of generating a custom JWT, return Firebase's built-in authentication ID token
+        // Instead of generating a custom JWT, return Firebase's built-in authentication ID token adding somee
         const idToken = await admin.auth().createCustomToken(userRecord.uid);
 
         res.status(200).json({ message: "Login successful", idToken });
@@ -93,4 +93,9 @@ exports.loginUser = functions.https.onRequest(async (req, res) => {
         console.error("Login error:", error);
         res.status(500).json({ error: error.message });
     }
+});
+
+
+exports.helloWorld = functions.https.onRequest((req, res) => { //test
+    res.send("Hello from Node 18 (2nd Gen)!");
 });
