@@ -29,7 +29,7 @@ jobs:
         # Tells future steps to use /tmp/key.json as the default credentials
         run: echo "GOOGLE_APPLICATION_CREDENTIALS=/tmp/key.json" >> $GITHUB_ENV
 
-    
+
 
       - name: Install Dependencies
         run: |
