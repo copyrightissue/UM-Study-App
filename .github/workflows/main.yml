@@ -23,14 +23,14 @@ jobs:
       - name: Decode and write SA key
         run: |
           echo "${{ secrets.GCLOUD_SA_KEY_B64 }}" | base64 --decode > /tmp/key.json
-          echo "${{ secrets.FIREBASE_ADMIN_SDK}}" | > /tmp/studybuddy-1b01f-firebase-adminsdk.json
+          echo "${{ secrets.FIREBASE_ADMIN_SDK}}" | > /functions/studybuddy-1b01f-firebase-adminsdk.json
 
       - name: Set ADC Env
         # Tells future steps to use /tmp/key.json as the default credentials
         run: echo "GOOGLE_APPLICATION_CREDENTIALS=/tmp/key.json" >> $GITHUB_ENV
 
       - name: Authenticate with firebase sdk
-        run: echo "FIREBASE_ADMIN_SDK=/tmp/studybuddy-1b01f-firebase-adminsdk.json" >> $GITHUB_ENV
+        run: echo "FIREBASE_ADMIN_SDK=/functions/studybuddy-1b01f-firebase-adminsdk.json" >> $GITHUB_ENV
 
 
       - name: Install Dependencies
