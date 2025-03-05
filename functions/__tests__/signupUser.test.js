@@ -1,9 +1,5 @@
-const { signupUser } = require("../index");
-const admin = require("firebase-admin");
-const bcrypt = require("bcryptjs");
-
-// Mock the `admin.sdk.json` file (service account credentials)
-jest.mock("../studybuddy-1b01f-firebase-adminsdk.json", () => ({
+// Inject mock service account credentials for GitHub Actions
+process.env.FIREBASE_ADMIN_CREDENTIALS = JSON.stringify({
     type: "service_account",
     project_id: "studybuddy-1b01f",
     private_key_id: "fake-private-key-id",
@@ -14,7 +10,12 @@ jest.mock("../studybuddy-1b01f-firebase-adminsdk.json", () => ({
     token_uri: "https://oauth2.googleapis.com/token",
     auth_provider_x509_cert_url: "https://www.googleapis.com/oauth2/v1/certs",
     client_x509_cert_url: "https://www.googleapis.com/robot/v1/metadata/x509/fake-email%40studybuddy-1b01f.iam.gserviceaccount.com"
-}));
+});
+
+// Now import the necessary modules
+const { signupUser } = require("../index");
+const admin = require("firebase-admin");
+const bcrypt = require("bcryptjs");
 
 // Mock bcrypt
 jest.mock("bcryptjs", () => ({
@@ -43,6 +44,7 @@ jest.mock("firebase-admin", () => {
         }
     };
 });
+
 
 describe("signupUser", () => {
     let mockFirestore;
