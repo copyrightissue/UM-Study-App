@@ -2,13 +2,10 @@ const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 const bcrypt = require("bcryptjs");
 
-const serviceAccount = require("./studybuddy-1b01f-firebase-adminsdk.json"); // Ensure the correct path
+// const serviceAccount = require("./studybuddy-1b01f-firebase-adminsdk.json"); // Ensure the correct path
 
 // Initialize Firebase Admin SDK with service account credentials
-admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-    databaseURL: "https://studybuddy-1b01f.firebaseio.com" // Update with your Firebase database URL
-});
+admin.initializeApp();
 
 const db = admin.firestore();
 
