@@ -36,6 +36,13 @@ jobs:
           cd functions
           npm install
 
+      - name: Build Next.js
+        run: |
+          cd um-study-app
+          npm install
+          npm run build   # or "npm run export" if you're using the older next export method
+
+
       - name: Test
         run: |
           cd functions
