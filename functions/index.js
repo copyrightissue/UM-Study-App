@@ -1,23 +1,16 @@
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-require("dotenv").config(); // Load environment variables for local testing
 
-// Initialize Firebase Admin SDK
+// const serviceAccount = require("./studybuddy-1b01f-firebase-adminsdk.json"); // Ensure the correct path
+
+// Initialize Firebase Admin SDK with service account credentials
 admin.initializeApp();
+
 const db = admin.firestore();
 
-// Secret key for JWT authentication (from Firebase Config or .env)
-const SECRET_KEY = process.env.SECRET_KEY;
-
-if (!SECRET_KEY) {
-    console.error("ERROR: Secret key is missing. Set it using Firebase Config or .env.");
-    process.exit(1); // Exit if no secret key is set
-}
-
 /**
- * Signup Function: Creates a user and stores their profile in Firestore
+ * Signup Function: Creates a user in Firebase Auth and stores their profile in Firestore
  */
 exports.signupUser = functions.https.onRequest(async (req, res) => {
     try {
@@ -33,7 +26,7 @@ exports.signupUser = functions.https.onRequest(async (req, res) => {
             return res.status(400).json({ message: "Email already in use." });
         }
 
-        // Hash the password
+        // Hash the password before storing it
         const hashedPassword = await bcrypt.hash(password, 10);
 
         // Create user in Firebase Authentication
@@ -43,7 +36,7 @@ exports.signupUser = functions.https.onRequest(async (req, res) => {
             displayName: fullName
         });
 
-        // Store user profile in Firestore using user.uid as the document ID
+        // Store user profile in Firestore using user.uid as the document ID (key)
         await db.collection("users").doc(user.uid).set({
             fullName,
             studentID,
@@ -61,7 +54,7 @@ exports.signupUser = functions.https.onRequest(async (req, res) => {
 });
 
 /**
- * Login Function: Authenticates a user and returns a JWT token
+ * Login Function: Verifies Firebase Authentication Token
  */
 exports.loginUser = functions.https.onRequest(async (req, res) => {
     try {
@@ -91,10 +84,10 @@ exports.loginUser = functions.https.onRequest(async (req, res) => {
             return res.status(401).json({ message: "Invalid password." });
         }
 
-        // Generate JWT token
-        const token = jwt.sign({ uid: userRecord.uid, role: userData.role }, SECRET_KEY, { expiresIn: "1h" });
+        // Instead of generating a custom JWT, return Firebase's built-in authentication ID token adding somee
+        const idToken = await admin.auth().createCustomToken(userRecord.uid);
 
-        res.status(200).json({ message: "Login successful", token });
+        res.status(200).json({ message: "Login successful", idToken });
 
     } catch (error) {
         console.error("Login error:", error);
@@ -102,17 +95,7 @@ exports.loginUser = functions.https.onRequest(async (req, res) => {
     }
 });
 
-/**
- * Secure Firestore Rules (Add this to `firebase.json`)
- * Ensure users can only access their own data:
- */
-// {
-//   "rules_version": "2",
-//   "service": "cloud.firestore",
-//   "match /databases/{database}/documents {
-//     match /users/{userId} {
-//       allow read, update, delete: if request.auth.uid == userId;
-//       allow create: if request.auth != null;
-//     }
-//   }
-// }
+
+exports.helloWorld = functions.https.onRequest((req, res) => { //test
+    res.send("Hello from Node 18 (2nd Gen)!");
+});

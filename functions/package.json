@@ -7,7 +7,8 @@
     "start": "npm run shell",
     "deploy": "firebase deploy --only functions",
     "logs": "firebase functions:log",
-    "test": "jest"
+    "test": "jest --coverage",
+    "coverage": "jest --coverage"
   },
   "engines": {
     "node": "18"
@@ -16,13 +17,14 @@
   "dependencies": {
     "bcryptjs": "^3.0.2",
     "dotenv": "^16.4.7",
-    "firebase-admin": "^12.6.0",
-    "firebase-functions": "^6.0.1",
+    "firebase-admin": "^13.1.0",
+    "firebase-functions": "^6.3.2",
     "jsonwebtoken": "^9.0.2"
   },
   "devDependencies": {
     "firebase-functions-test": "^3.1.0",
-    "jest": "^29.7.0"
+    "jest": "^29.7.0",
+    "nyc": "^17.1.0"
   },
   "private": true
 }
