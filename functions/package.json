@@ -1,6 +1,7 @@
 {
   "name": "functions",
   "description": "Cloud Functions for Firebase",
+  
   "scripts": {
     "serve": "firebase emulators:start --only functions",
     "shell": "firebase functions:shell",
@@ -9,6 +10,9 @@
     "logs": "firebase functions:log",
     "test": "jest --coverage",
     "coverage": "jest --coverage"
+  },
+  "jest": {
+    "testPathIgnorePatterns": ["/node_modules/", "functions/__e2e__", ".*\\.spec\\.ts$"]
   },
   "engines": {
     "node": "18"
@@ -27,4 +31,5 @@
     "nyc": "^17.1.0"
   },
   "private": true
+  
 }
