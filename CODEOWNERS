@@ -1,0 +1,18 @@
+# codeowners file is responsible for auto assigning reviewers to PRs based on the files changed.
+# I based in on the RACI matrix we created and my best guess as to who should be responsible for what.
+
+# Team Lead
+README.md @WesleeS
+
+#FrontEnd
+uml-study-app/ @Ulligaq
+
+# Backend
+functions/index.js @cassorr
+
+# testing
+functions/__tests__/ @timvandriel
+
+#Devops
+.github/workflows/ @username34
+CODEOWNERS @username34
