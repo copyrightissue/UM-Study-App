@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 
 const StudyBuddyClassCreation = () => {
-    const [fields, setFields] = useState({ classCode: "", classTitle: ""});
+    const [fields, setFields] = useState({ course_code: "", name: ""});
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFields({ ...fields, [e.target.name]: e.target.value });
@@ -16,8 +16,8 @@ const StudyBuddyClassCreation = () => {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    classCode: fields.classCode,
-                    classTitle: fields.classTitle
+                    classCode: fields.course_code,
+                    classTitle: fields.name
                 })
             });
 
@@ -67,7 +67,7 @@ const StudyBuddyClassCreation = () => {
                 <input
                     type="text"
                     name="classCode"
-                    value={fields.classCode}
+                    value={fields.course_code}
                     onChange={handleChange}
                     placeholder="Example: CSCI 491"
                     required
@@ -77,7 +77,7 @@ const StudyBuddyClassCreation = () => {
                 <input
                     type="text"
                     name="classInstructor"
-                    value={fields.classTitle}
+                    value={fields.name}
                     onChange={handleChange}
                     required
                 />
