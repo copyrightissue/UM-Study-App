@@ -7,7 +7,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "firebase": "^11.2.0",
+    "firebase": "^11.5.0",
     "firebase-functions": "^6.3.2"
   },
   "devDependencies": {
