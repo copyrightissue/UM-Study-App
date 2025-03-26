@@ -1,8 +1,10 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
+import { useRouter } from "next/router";
+import Link from "next/link";
 
 const StudyBuddyLogin = () => {
   const [credentials, setCredentials] = useState({ email: "", password: "" });
+  const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
@@ -12,15 +14,10 @@ const StudyBuddyLogin = () => {
     e.preventDefault();
 
     try {
-      // const functionURL = "https://us-central1-studybuddy-1b01f.cloudfunctions.net/loginUser";
-
       const response = await fetch("/api/loginUser", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: credentials.email,
-          password: credentials.password
-        })
+        body: JSON.stringify(credentials),
       });
 
       if (!response.ok) {
@@ -32,14 +29,23 @@ const StudyBuddyLogin = () => {
       const data = await response.json();
       console.log("Login success:", data);
       alert("Login successful!");
-      // possibly store data.token in localStorage or context
-      // then navigate to the main app page
+
+      // Save token or user data as needed
+      localStorage.setItem("token", data.token); // optional
+
+      // Redirect based on role
+      if (data.user?.role === "teacher") {
+        router.push("/dashboard-teacher.html");
+      } else {
+        router.push("/dashboard-teacher.html");
+      }
 
     } catch (err) {
       console.error("Error calling login function:", err);
       alert("An error occurred during login.");
     }
   };
+
   return (
     <div
       style={{
@@ -65,15 +71,15 @@ const StudyBuddyLogin = () => {
       >
         <span role="img" aria-label="book">📘</span> Study Buddy
       </h1>
-  
+
       {/* Welcome Message */}
       <p style={{ color: "#374151", fontSize: "1.25rem" }}>
         Welcome to <span style={{ color: "#3b82f6" }}>Study Buddy</span>!
       </p>
-  
+
       {/* Login Form */}
       <form onSubmit={handleSubmit} style={{ marginTop: "16px", width: "100%", maxWidth: "400px" }}>
-        <label style={{ fontSize: "1.125rem", fontWeight: "600", textAlign: "left"}}>Email:</label>
+        <label style={{ fontSize: "1.125rem", fontWeight: "600", textAlign: "left" }}>Email:</label>
         <input
           type="text"
           style={{
@@ -90,8 +96,8 @@ const StudyBuddyLogin = () => {
           onChange={handleChange}
           placeholder="Enter Email"
         />
-  
-        <label style={{ fontSize: "1.125rem", fontWeight: "600", display: "block"}}>Password:</label>
+
+        <label style={{ fontSize: "1.125rem", fontWeight: "600", display: "block" }}>Password:</label>
         <input
           type="password"
           style={{
@@ -107,7 +113,7 @@ const StudyBuddyLogin = () => {
           onChange={handleChange}
           placeholder="Enter Password"
         />
-  
+
         <button
           type="submit"
           style={{
@@ -126,17 +132,16 @@ const StudyBuddyLogin = () => {
           Login
         </button>
       </form>
-  
+
       {/* New Account Link */}
       <p style={{ marginTop: "16px", color: "#6b7280" }}>
         If you do not have an account, click the link here:{" "}
-        <a href="/signup.html" style={{ color: "#3b82f6", textDecoration: "underline" }}>
+        <Link href="/signup" style={{ color: "#3b82f6", textDecoration: "underline" }}>
           New Account
-        </a>
+        </Link>
       </p>
     </div>
   );
-  
 };
 
 export default StudyBuddyLogin;
