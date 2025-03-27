@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 
-const StudyBuddyClassCreation = () => {
+const ClassCreation = () => {
     const [fields, setFields] = useState({ course_code: "", name: ""});
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -88,4 +88,4 @@ const StudyBuddyClassCreation = () => {
     );
 };
 
-export default StudyBuddyClassCreation;
+export default ClassCreation;
