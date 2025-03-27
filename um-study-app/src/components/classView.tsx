@@ -1,14 +1,26 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useRouter } from "next/router";
-import Link from "next/link";
 
-const StudentDashboard: React.FC = () => {
-  const [classes, setClasses] = useState<string[]>([]);
+const ClassView: React.FC = () => {
   const router = useRouter();
 
-  useEffect(() => {
-    setClasses(["Intro to CS", "Discrete Math", "Web Dev Basics"]);
-  }, []);
+  // Dummy data for classes
+  const classes = [
+    { name: "Intro to CS", teacher: "Mr. Smith" },
+    { name: "Discrete Math", teacher: "Mrs. Johnson" },
+    { name: "Web Dev Basics", teacher: "Ms. Lee" }
+  ];
+
+  // Dummy role (replace this with actual logic to determine the user's role)
+  const role = "teacher"; // Change to "student" to test redirection for students
+
+  const handleRedirect = () => {
+    if (role === "teacher") {
+      router.push("/dashboard-teacher");
+    } else {
+      router.push("/dashboard-student");
+    }
+  };
 
   return (
     <div style={{
@@ -29,24 +41,24 @@ const StudentDashboard: React.FC = () => {
         textAlign: "center"
       }}>
         <h1 style={{ color: "#2563eb", fontSize: "1.75rem", marginBottom: "1rem" }}>
-          Student Dashboard
+          Classes
         </h1>
-        <h2 style={{ fontSize: "1.25rem", marginBottom: "1rem", color: "#374151" }}>
-          Your Classes
-        </h2>
         <ul style={{ listStyle: "none", padding: 0, color: "#4b5563" }}>
           {classes.map((cls, i) => (
             <li key={i} style={{
               padding: "0.5rem 0",
               borderBottom: "1px solid #e5e7eb"
             }}>
-              {cls}
+              <h2 style={{ color: "#2563eb", fontSize: "1.25rem" }}>{cls.name}</h2>
+              <p style={{ color: "#374151" }}>Teacher: {cls.teacher}</p>
             </li>
           ))}
         </ul>
+        {/* Add the button for redirection */}
         <div style={{ textAlign: "center", marginTop: "1rem" }}>
-          <Link href="/classView">
-            <button style={{
+          <button
+            onClick={handleRedirect}
+            style={{
               backgroundColor: "#2563eb",
               color: "white",
               padding: "0.5rem 1rem",
@@ -55,16 +67,15 @@ const StudentDashboard: React.FC = () => {
               cursor: "pointer",
               transition: "background 0.3s"
             }}
-              onMouseOver={(e) => ((e.target as HTMLButtonElement).style.backgroundColor = "#1e40af")}
-              onMouseOut={(e) => ((e.target as HTMLButtonElement).style.backgroundColor = "#2563eb")}
-            >
-              View All Classes
-            </button>
-          </Link>
+            onMouseOver={(e) => ((e.target as HTMLButtonElement).style.backgroundColor = "#1e40af")}
+            onMouseOut={(e) => ((e.target as HTMLButtonElement).style.backgroundColor = "#2563eb")}
+          >
+            Go to Dashboard
+          </button>
         </div>
       </div>
     </div>
   );
 };
 
-export default StudentDashboard;
+export default ClassView;
