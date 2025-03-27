@@ -1,9 +1,9 @@
 import React from "react";
-import StudyBuddyLogin from "@/components/classCreation";
-import StudyBuddyClassCreation from "@/components/classCreation";
+import ClassCreation from "@/components/classCreation"; 
 
-const StudyBuddyClassCreationPage: React.FC = () => {
-  return <StudyBuddyClassCreationPage/>;
+const ClassCreationPage: React.FC = () => {
+  return <ClassCreation/>;
 };
 
-export default <StudyBuddyClassCreation/>;
+
+export default ClassCreationPage;

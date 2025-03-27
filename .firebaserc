@@ -1,6 +1,7 @@
 {
   "projects": {
     "default": "studybuddy-1b01f",
+    "Bethany": "studybuddy-1b01f",
     "Ulligaq": "studybuddy-1b01f",
     "TestFrontEnd": "studybuddy-1b01f"
   },
