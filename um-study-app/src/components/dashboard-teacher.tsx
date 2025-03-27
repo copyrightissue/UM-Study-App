@@ -44,7 +44,24 @@ const TeacherDashboard: React.FC = () => {
         </ul>
 
         <div style={{ marginTop: "1.5rem" }}>
-          <Link href="/create-class">
+          <Link href="/classView">
+            <button style={{
+              backgroundColor: "#2563eb",
+              color: "white",
+              padding: "0.5rem 1rem",
+              border: "none",
+              borderRadius: "4px",
+              cursor: "pointer",
+              transition: "background 0.3s",
+              marginRight: "1rem"
+            }}
+              onMouseOver={(e) => ((e.target as HTMLButtonElement).style.backgroundColor = "#1e40af")}
+              onMouseOut={(e) => ((e.target as HTMLButtonElement).style.backgroundColor = "#2563eb")}
+            >
+              View All Classes
+            </button>
+          </Link>
+          <Link href="/classcreation">
             <button style={{
               backgroundColor: "#2563eb",
               color: "white",
