@@ -1,7 +1,12 @@
 {
   "projects": {
     "default": "studybuddy-1b01f",
+<<<<<<< HEAD
     "Bethany": "studybuddy-1b01f"
+=======
+    "Ulligaq": "studybuddy-1b01f",
+    "TestFrontEnd": "studybuddy-1b01f"
+>>>>>>> f161017019eb4dca4fcff4937bce41bd6c322636
   },
   "targets": {},
   "etags": {}

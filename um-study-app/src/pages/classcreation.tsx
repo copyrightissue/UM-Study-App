@@ -2,8 +2,8 @@ import React from "react";
 import StudyBuddyLogin from "@/components/classCreation";
 import StudyBuddyClassCreation from "@/components/classCreation";
 
-const Home: React.FC = () => {
-  return <StudyBuddyClassCreation/>;
+const StudyBuddyClassCreationPage: React.FC = () => {
+  return <StudyBuddyClassCreationPage/>;
 };
 
-export default Home;
+export default <StudyBuddyClassCreation/>;

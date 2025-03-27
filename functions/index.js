@@ -2,13 +2,10 @@ const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 const bcrypt = require("bcryptjs");
 
-const serviceAccount = require("./studybuddy-1b01f-firebase-adminsdk.json"); // Ensure the correct path
+// const serviceAccount = require("./studybuddy-1b01f-firebase-adminsdk.json"); // Ensure the correct path
 
 // Initialize Firebase Admin SDK with service account credentials
-admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-    databaseURL: "https://studybuddy-1b01f.firebaseio.com" // Update with your Firebase database URL
-});
+admin.initializeApp();
 
 const db = admin.firestore();
 
@@ -39,7 +36,7 @@ exports.signupUser = functions.https.onRequest(async (req, res) => {
             displayName: fullName
         });
 
-        // Store user profile in Firestore using user.uid as the document ID
+        // Store user profile in Firestore using user.uid as the document ID (key)
         await db.collection("users").doc(user.uid).set({
             fullName,
             studentID,
@@ -87,7 +84,7 @@ exports.loginUser = functions.https.onRequest(async (req, res) => {
             return res.status(401).json({ message: "Invalid password." });
         }
 
-        // Instead of generating a custom JWT, return Firebase's built-in authentication ID token
+        // Instead of generating a custom JWT, return Firebase's built-in authentication ID token adding somee
         const idToken = await admin.auth().createCustomToken(userRecord.uid);
 
         res.status(200).json({ message: "Login successful", idToken });
@@ -96,4 +93,9 @@ exports.loginUser = functions.https.onRequest(async (req, res) => {
         console.error("Login error:", error);
         res.status(500).json({ error: error.message });
     }
+});
+
+
+exports.helloWorld = functions.https.onRequest((req, res) => { //test
+    res.send("Hello from Node 18 (2nd Gen)!");
 });

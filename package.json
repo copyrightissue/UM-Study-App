@@ -7,11 +7,17 @@
     "test": "jest"
   },
   "dependencies": {
+<<<<<<< HEAD
     "@types/react": "^19.0.10",
     "firebase": "^11.5.0",
     "react": "^19.0.0"
+=======
+    "firebase": "^11.5.0",
+    "firebase-functions": "^6.3.2"
+>>>>>>> f161017019eb4dca4fcff4937bce41bd6c322636
   },
   "devDependencies": {
+    "@playwright/test": "^1.50.1",
     "jest": "^29.5.0"
   }
 }

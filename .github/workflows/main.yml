@@ -23,20 +23,36 @@ jobs:
       - name: Decode and write SA key
         run: |
           echo "${{ secrets.GCLOUD_SA_KEY_B64 }}" | base64 --decode > /tmp/key.json
+          
 
       - name: Set ADC Env
         # Tells future steps to use /tmp/key.json as the default credentials
         run: echo "GOOGLE_APPLICATION_CREDENTIALS=/tmp/key.json" >> $GITHUB_ENV
 
+
+
+
       - name: Install Dependencies
         run: |
           cd functions
           npm install
+          
+      - name: Build Next.js
+        run: |
+          cd um-study-app
+          npm install
+          npm run build   # or "npm run export" if you're using the older next export method
 
-      - name: Test
+      - name: Run Tests and Generate Coverage Report
         run: |
           cd functions
-          npm test
+          npm test -- --coverage
+            
+      - name: Upload Jest Coverage Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: jest-coverage-report
+          path: functions/coverage/*
 
       - name: Deploy using Firebase CLI
         if: success()
