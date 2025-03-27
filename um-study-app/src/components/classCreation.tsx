@@ -66,7 +66,7 @@ const StudyBuddyClassCreation = () => {
                 <label>Class Code:</label>
                 <input
                     type="text"
-                    name="classCode"
+                    name="course_code"
                     value={fields.course_code}
                     onChange={handleChange}
                     placeholder="Example: CSCI 491"
@@ -76,7 +76,7 @@ const StudyBuddyClassCreation = () => {
                 <label>Class Title:</label>
                 <input
                     type="text"
-                    name="classInstructor"
+                    name="name"
                     value={fields.name}
                     onChange={handleChange}
                     required
