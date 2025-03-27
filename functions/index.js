@@ -95,6 +95,60 @@ exports.loginUser = functions.https.onRequest(async (req, res) => {
     }
 });
 
+exports.getUser = functions.https.onRequest(async (req, res) => {
+    try {
+        const { uid } = req.query;
+
+        if (!uid) {
+            return res.status(400).json({ message: "Missing user ID (uid) in query params" });
+        }
+
+        const userDoc = await db.collection("users").doc(uid).get();
+
+        if (!userDoc.exists) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        const userData = userDoc.data();
+        res.status(200).json({ user: userData });
+
+    } catch (error) {
+        console.error("getUser error:", error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+exports.isAuthenticated = functions.https.onRequest(async (req, res) => {
+    try {
+        const { uid } = req.query;
+
+        if (!uid) {
+            return res.status(400).json({ message: "Missing user ID (uid) in query params" });
+        }
+
+        // Optionally: Verify the UID exists in Firebase Auth
+        const userRecord = await admin.auth().getUser(uid).catch(() => null);
+        if (!userRecord) {
+            return res.status(401).json({ authenticated: false, message: "Invalid user ID" });
+        }
+
+        // Get user role from Firestore
+        const userDoc = await db.collection("users").doc(uid).get();
+        if (!userDoc.exists) {
+            return res.status(404).json({ authenticated: false, message: "User profile not found" });
+        }
+
+        const { role } = userDoc.data();
+
+        const isTeacher = role && role.toLowerCase() === 'teacher';
+
+        return res.status(200).json({ authenticated: isTeacher });
+
+    } catch (error) {
+        console.error("isAuthenticated error:", error);
+        res.status(500).json({ error: error.message });
+    }
+});
 
 exports.helloWorld = functions.https.onRequest((req, res) => { //test
     res.send("Hello from Node 18 (2nd Gen)!");
