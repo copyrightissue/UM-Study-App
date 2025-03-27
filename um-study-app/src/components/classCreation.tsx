@@ -1,7 +1,8 @@
 import React from "react";
 import { useState } from "react";
+import styles from "../styles/Home.module.css";
 
-const StudyBuddyClassCreation = () => {
+const ClassCreation = () => {
     const [fields, setFields] = useState({ course_code: "", name: ""});
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -38,17 +39,7 @@ const StudyBuddyClassCreation = () => {
     };
 
     return (
-        <div 
-            style={{
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center",
-                minHeight: "100vh",
-                textAlign: "center",
-                backgroundColor: "#f3f4f6",
-            }}
-        >
+        <div>
             <h1
                 style={{
                     fontSize: "2rem",
@@ -62,30 +53,37 @@ const StudyBuddyClassCreation = () => {
                 <span role="img" aria-label="book">📘</span> Study Buddy
             </h1>
 
-            <form onSubmit={handleSubmit}>
-                <label>Class Code:</label>
-                <input
-                    type="text"
-                    name="classCode"
-                    value={fields.course_code}
-                    onChange={handleChange}
-                    placeholder="Example: CSCI 491"
-                    required
-                />
+            <div className={styles.container}>
+                <div className={styles.card}>
+                <form onSubmit={handleSubmit}>
+                    <label className={styles.label}>Course Code:</label>
+                    <input
+                        type="text"
+                        name="course_code"
+                        value={fields.course_code}
+                        onChange={handleChange}
+                        placeholder="CSCI 491"
+                        required
+                        style={{ width: "100%" }}
+                    />
 
-                <label>Class Title:</label>
-                <input
-                    type="text"
-                    name="classInstructor"
-                    value={fields.name}
-                    onChange={handleChange}
-                    required
-                />
+                    <label className={styles.label}>Class Title:</label>
+                    <input
+                        type="text"
+                        name="name"
+                        value={fields.name}
+                        onChange={handleChange}
+                        placeholder="Advanced Software Engineering"
+                        required
+                        style={{ width: "100%", display: "block", marginBottom: "1rem" }}
+                    />
 
-                <button type="submit">Create Class</button>
-            </form>
+                    <button type="submit" className={styles.button}>Create Class</button>
+                </form>
+                </div>
+            </div>
         </div>
     );
 };
 
-export default StudyBuddyClassCreation;
+export default ClassCreation;
