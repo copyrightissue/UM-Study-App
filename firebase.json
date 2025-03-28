@@ -28,6 +28,26 @@
       {
         "source": "/api/loginUser",
         "function": "loginUser"
+      },
+      {
+        "source": "/api/getUser",
+        "function": "getUser"
+      },
+      {
+        "source": "/api/isAuthenticated",
+        "function": "isAuthenticated"
+      },
+      {
+        "source": "/api/getAllClasses",
+        "function": "getAllClasses"
+      },
+      {
+        "source": "/api/createClass",
+        "function": "createClass"
+      },
+      {
+        "source": "/api/helloWorld",
+        "function": "helloWorld"
       }
     ]
   },
