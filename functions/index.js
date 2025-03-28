@@ -149,7 +149,3 @@ exports.isAuthenticated = functions.https.onRequest(async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
-
-exports.helloWorld = functions.https.onRequest((req, res) => { //test
-    res.send("Hello from Node 18 (2nd Gen)!");
-});
