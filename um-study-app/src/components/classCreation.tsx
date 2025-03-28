@@ -1,5 +1,6 @@
 import React from "react";
 import { useState } from "react";
+import styles from "../styles/Home.module.css";
 
 const StudyBuddyClassCreation = () => {
     const [fields, setFields] = useState({ course_code: "", name: ""});
@@ -38,52 +39,49 @@ const StudyBuddyClassCreation = () => {
     };
 
     return (
-        <div 
-            style={{
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center",
-                minHeight: "100vh",
-                textAlign: "center",
-                backgroundColor: "#f3f4f6",
-            }}
-        >
-            <h1
-                style={{
-                    fontSize: "2rem",
-                    fontWeight: "bold",
-                    color: "#2563eb",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "8px",
-                }}
-            >
-                <span role="img" aria-label="book">📘</span> Study Buddy
-            </h1>
+        <div className={styles.container}>
+            <div className={styles.card}>
+                <h1
+                    style={{
+                        fontSize: "2rem",
+                        fontWeight: "bold",
+                        color: "#2563eb",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "8px",
+                    }}
+                >
+                    <span role="img" aria-label="book">📘</span> Study Buddy
+                </h1>
 
-            <form onSubmit={handleSubmit}>
-                <label>Class Code:</label>
-                <input
-                    type="text"
-                    name="course_code"
-                    value={fields.course_code}
-                    onChange={handleChange}
-                    placeholder="Example: CSCI 491"
-                    required
-                />
+                <form onSubmit={handleSubmit}>
+                    <label className={styles.label}>Course Code:</label>
+                    <input
+                        type="text"
+                        name="course_code"
+                        value={fields.course_code}
+                        onChange={handleChange}
+                        placeholder="Example: CSCI 491"
+                        required
+                        style={{width: "100%"}}
+                    />
 
-                <label>Class Title:</label>
-                <input
-                    type="text"
-                    name="name"
-                    value={fields.name}
-                    onChange={handleChange}
-                    required
-                />
+                    <label className={styles.label}>Class Title:</label>   
+                    <input
+                        type="text"
+                        name="name"
+                        value={fields.name}
+                        onChange={handleChange}
+                        placeholder="Example: Advanced Software Engineering"
+                        required
+                        style={{width: "100%"}}
+                    />
 
-                <button type="submit">Create Class</button>
-            </form>
+                    <div style={{ marginTop: "16px" }}>
+                        <button type="submit" className={styles.button}>Create Class</button>
+                    </div>
+                </form>
+            </div>
         </div>
     );
 };
