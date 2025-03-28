@@ -14,5 +14,5 @@ functions/index.js @cassorr
 functions/__tests__/ @timvandriel
 
 #Devops
-.github/workflows/ @username34
-CODEOWNERS @username34
+.github/workflows/ @copyrightissue
+CODEOWNERS @copyrightissue
