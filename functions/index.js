@@ -149,7 +149,6 @@ exports.isAuthenticated = functions.https.onRequest(async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
-
 exports.getAllClasses = functions.https.onRequest(async (req, res) => {
     try {
         const classesSnapshot = await db.collection("classes").get();
@@ -213,3 +212,4 @@ exports.createClass = functions.https.onRequest(async (req, res) => {
 exports.helloWorld = functions.https.onRequest((req, res) => { //test
     res.send("Hello from Node 18 (2nd Gen)!");
 });
+

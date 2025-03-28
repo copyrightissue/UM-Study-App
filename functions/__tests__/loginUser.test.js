@@ -1,42 +1,31 @@
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const { loginUser } = require("../index");
+const { loginUser } = require("../index");  // Adjust the import as needed
 
-// Mock the serviceAccount file import
-jest.mock("../studybuddy-1b01f-firebase-adminsdk.json", () => ({
-    projectId: "studybuddy-1b01f",
-    privateKey: "fake-private-key",
-    clientEmail: "fake-client-email"
-}), { virtual: true });
-
-// Mock Firebase Admin and related libraries
+// Mock Firebase Admin methods (but not the service account key)
 jest.mock("firebase-admin", () => {
     const firestoreMock = {
         collection: jest.fn().mockReturnThis(),
         doc: jest.fn().mockReturnThis(),
-        get: jest.fn()
+        get: jest.fn(),
     };
 
     const authMock = {
         getUserByEmail: jest.fn(),
-        createCustomToken: jest.fn()
+        createCustomToken: jest.fn(),
     };
 
     return {
         initializeApp: jest.fn(),
         firestore: jest.fn(() => firestoreMock),
         auth: jest.fn(() => authMock),
-        credential: {
-            cert: jest.fn(() => "mocked-credential")
-        }
     };
 });
 
 // Mock bcrypt
 jest.mock("bcryptjs", () => ({
-    compare: jest.fn()
+    compare: jest.fn(),
 }));
 
 describe("loginUser", () => {
@@ -51,6 +40,7 @@ describe("loginUser", () => {
         mockAuth = admin.auth();
         mockFirestore = admin.firestore();
 
+        // Default mock responses
         mockAuth.getUserByEmail.mockResolvedValue({
             uid: "12345",
             email: "test@test.com",
@@ -114,7 +104,6 @@ describe("loginUser", () => {
         expect(res.status).toHaveBeenCalledWith(400);
         expect(res.json).toHaveBeenCalledWith({ message: "User not found." });
     });
-
 
     test("should return 400 if email or password is missing", async () => {
         const req = {
