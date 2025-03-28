@@ -149,3 +149,67 @@ exports.isAuthenticated = functions.https.onRequest(async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
+exports.getAllClasses = functions.https.onRequest(async (req, res) => {
+    try {
+        const classesSnapshot = await db.collection("classes").get();
+
+        if (classesSnapshot.empty) {
+            return res.status(200).json({ classes: [] });
+        }
+
+        const classes = classesSnapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data()
+        }));
+
+        res.status(200).json({ classes });
+
+    } catch (error) {
+        console.error("getAllClasses error:", error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+exports.createClass = functions.https.onRequest(async (req, res) => {
+    try {
+        const { uid, name, course_code } = req.body;
+
+        if (!uid || !name || !course_code) {
+            return res.status(400).json({ message: "Missing required fields: uid, name, or course_code" });
+        }
+
+        // Get the user profile from Firestore
+        const userDoc = await db.collection("users").doc(uid).get();
+        if (!userDoc.exists) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        const { role } = userDoc.data();
+
+        // Only allow teachers to create classes
+        if (!role || role.toLowerCase() !== "teacher") {
+            return res.status(403).json({ message: "Only teachers can create classes." });
+        }
+
+        // Add class to 'classes' collection
+        const classRef = await db.collection("classes").add({
+            name,
+            course_code
+        });
+
+        res.status(201).json({
+            message: "Class created successfully",
+            classId: classRef.id
+        });
+
+    } catch (error) {
+        console.error("createClass error:", error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+
+exports.helloWorld = functions.https.onRequest((req, res) => { //test
+    res.send("Hello from Node 18 (2nd Gen)!");
+});
+
