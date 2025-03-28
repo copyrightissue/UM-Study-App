@@ -11,6 +11,11 @@ Weslee - **Lead**
 # Problem Statement
 The problem we aim to solve with software is helping students study better. We aim to achieve this through the development of collaborative notes, scheduled meetings, and functional rating systems all supervised by teachers.
 
+# Setup and Local Usage
+To run locally, first install the repository locally and then navigate to the root folder.  
+Then, navigate to `./um-study-app` and run `npm install`. This will prepare the required modules and packages.  
+Finally, run `npm start dev` in the same location to start a local development server.
+
 # Target Users 
 The target users are students, professors, and TAs. 
 
@@ -38,4 +43,3 @@ Events are:
 - **Created by students** (to be more proactive), and **affirmed by other students or verified by Instructor/TA**.
 - Relate to a **specific course** (e.g., "Exam for CSCI###").
 - **Aggregate student availability** based on freetime, allowing better setup and arrangement of study sessions by users.
-
