@@ -1,23 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styles from "../styles/Home.module.css";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 const StudyBuddyClassCreation = () => {
     const [fields, setFields] = useState({ course_code: "", name: "" });
-    const [currentUID, setCurrentUID] = useState<string | null>(null);
 
-    useEffect(() => {
-        // Listen for auth changes; store the UID if a user is logged in
-        const auth = getAuth();
-        const unsubscribe = onAuthStateChanged(auth, (user) => {
-            if (user) {
-                setCurrentUID(user.uid);
-            } else {
-                setCurrentUID(null);
-            }
-        });
-        return () => unsubscribe();
-    }, []);
+
+    const userUid = typeof window !== "undefined" ? localStorage.getItem("uid") : null;
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFields({ ...fields, [e.target.name]: e.target.value });
@@ -25,36 +13,34 @@ const StudyBuddyClassCreation = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-
         try {
-            // 1) Ensure we have a user logged in (otherwise we can't check teacher status)
-            if (!currentUID) {
-                alert("No user is currently logged in.");
+            if (!userUid) {
+                alert("No UID found. Please log in first.");
                 return;
             }
 
-            // 2) Check if the user is a teacher by calling /api/isAuthenticated?uid=<uid>
-            const authCheckRes = await fetch(`/api/isAuthenticated?uid=${currentUID}`);
+            // 1) Check if user is teacher:
+            const authCheckRes = await fetch(`/api/isAuthenticated?uid=${userUid}`);
             if (!authCheckRes.ok) {
                 const authCheckError = await authCheckRes.json();
                 alert(`Failed to check teacher status: ${authCheckError.message}`);
                 return;
             }
 
-            const { authenticated } = await authCheckRes.json();
-            if (!authenticated) {
-                alert("You do not have teacher permissions to create a class.");
+            const authCheckData = await authCheckRes.json();
+            if (!authCheckData.authenticated) {
+                alert("You do not have teacher permissions.");
                 return;
             }
 
-            // 3) If the user is a teacher, proceed with creating the class
+            // 2) If authenticated, create class
             const createClassRes = await fetch("/api/createClass", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    uid: currentUID,                  // pass the teacher’s UID
-                    course_code: fields.course_code,  // match the Cloud Function’s expected field name
-                    name: fields.name,                // match the Cloud Function’s expected field name
+                    uid: userUid,
+                    course_code: fields.course_code,
+                    name: fields.name,
                 }),
             });
 
