@@ -4,7 +4,7 @@ import path from 'path';
 
 const credentialsFile = path.resolve(__dirname, 'credentials.json'); // Same file as in signup
 
-test('User can log in', async ({ page }) => {
+test('User can create a new class', async ({ page }) => {
     // Ensure the credentials file exists
     if (!fs.existsSync(credentialsFile)) {
         throw new Error('❌ Signup must run first! No credentials found.');
@@ -29,4 +29,8 @@ test('User can log in', async ({ page }) => {
 
     // Verify login success
     await expect(page).toHaveURL(/dashboard-teacher\.html/);
+
+    await page.click('text="Create New Class"');
+    await page.fill('input[name="course_code"]', "CSCI" + String(email).slice(2,5));
+    await page.fill('input[name="name"]', "TestClass");
 });
