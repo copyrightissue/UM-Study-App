@@ -32,6 +32,7 @@ const StudyBuddyLogin = () => {
 
       // Save token or user data as needed
       localStorage.setItem("token", data.token); // optional
+        localStorage.setItem("uid", data.uid); // optional
 
       // Redirect based on role
       if (data.user?.role === "teacher") {

@@ -86,8 +86,9 @@ exports.loginUser = functions.https.onRequest(async (req, res) => {
 
         // Instead of generating a custom JWT, return Firebase's built-in authentication ID token adding somee
         const idToken = await admin.auth().createCustomToken(userRecord.uid);
+        const userUid = userRecord.uid; // Add user UID to response to use in client-side requests
 
-        res.status(200).json({ message: "Login successful", idToken });
+        res.status(200).json({ message: "Login successful", token: idToken, uid:userUid });
 
     } catch (error) {
         console.error("Login error:", error);

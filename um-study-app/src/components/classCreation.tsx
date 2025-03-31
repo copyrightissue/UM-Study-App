@@ -1,9 +1,11 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import styles from "../styles/Home.module.css";
 
 const StudyBuddyClassCreation = () => {
-    const [fields, setFields] = useState({ course_code: "", name: ""});
+    const [fields, setFields] = useState({ course_code: "", name: "" });
+
+
+    const userUid = typeof window !== "undefined" ? localStorage.getItem("uid") : null;
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFields({ ...fields, [e.target.name]: e.target.value });
@@ -11,24 +13,44 @@ const StudyBuddyClassCreation = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-
         try {
-            const response = await fetch("/api/createClass", {
+            if (!userUid) {
+                alert("No UID found. Please log in first.");
+                return;
+            }
+
+            // 1) Check if user is teacher:
+            const authCheckRes = await fetch(`/api/isAuthenticated?uid=${userUid}`);
+            if (!authCheckRes.ok) {
+                const authCheckError = await authCheckRes.json();
+                alert(`Failed to check teacher status: ${authCheckError.message}`);
+                return;
+            }
+
+            const authCheckData = await authCheckRes.json();
+            if (!authCheckData.authenticated) {
+                alert("You do not have teacher permissions.");
+                return;
+            }
+
+            // 2) If authenticated, create class
+            const createClassRes = await fetch("/api/createClass", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    classCode: fields.course_code,
-                    classTitle: fields.name
-                })
+                    uid: userUid,
+                    course_code: fields.course_code,
+                    name: fields.name,
+                }),
             });
 
-            if (!response.ok) {
-                const errorData = await response.json();
+            if (!createClassRes.ok) {
+                const errorData = await createClassRes.json();
                 alert(`Class creation failed: ${errorData.message || errorData.error}`);
                 return;
             }
 
-            const data = await response.json();
+            const data = await createClassRes.json();
             console.log("Class creation success:", data);
             alert("Class creation successful!");
             window.location.href = "/";
