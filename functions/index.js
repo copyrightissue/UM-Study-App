@@ -8,6 +8,7 @@ const bcrypt = require("bcryptjs");
 admin.initializeApp();
 
 const db = admin.firestore();
+const Timestamp = admin.firestore.Timestamp;
 
 /**
  * Signup Function: Creates a user in Firebase Auth and stores their profile in Firestore
@@ -96,6 +97,9 @@ exports.loginUser = functions.https.onRequest(async (req, res) => {
     }
 });
 
+/**
+ * getUser Function: Requests a userID, returns a user object
+ */
 exports.getUser = functions.https.onRequest(async (req, res) => {
     try {
         const { uid } = req.query;
@@ -119,6 +123,9 @@ exports.getUser = functions.https.onRequest(async (req, res) => {
     }
 });
 
+/**
+ * isAuthenticated Function: Verifies user has a teacher role
+ */
 exports.isAuthenticated = functions.https.onRequest(async (req, res) => {
     try {
         const { uid } = req.query;
@@ -150,6 +157,10 @@ exports.isAuthenticated = functions.https.onRequest(async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
+
+/**
+ * getAllClasses Function: Gets all classes in "classes" container
+ */
 exports.getAllClasses = functions.https.onRequest(async (req, res) => {
     try {
         const classesSnapshot = await db.collection("classes").get();
@@ -171,6 +182,9 @@ exports.getAllClasses = functions.https.onRequest(async (req, res) => {
     }
 });
 
+/**
+ * createClass Function: Requests a class object, creates a class in the "classes" container
+ */
 exports.createClass = functions.https.onRequest(async (req, res) => {
     try {
         const { uid, name, course_code } = req.body;
@@ -209,8 +223,64 @@ exports.createClass = functions.https.onRequest(async (req, res) => {
     }
 });
 
+/**
+ * createNote Function: Creates a new note associated with a course_code
+ */
+exports.createNote = functions.https.onRequest(async (req, res) => {
+    try {
+        const { title, contents, course_code } = req.body;
 
-exports.helloWorld = functions.https.onRequest((req, res) => { //test
-    res.send("Hello from Node 18 (2nd Gen)!");
+        if (!title || !contents || !course_code) {
+            return res.status(400).json({ message: "Missing required fields: title, contents, or course_code" });
+        }
+
+        const noteRef = await db.collection("notes").add({
+            title,
+            contents,
+            course_code,
+            createdAt: Timestamp.now()
+        });
+
+        res.status(201).json({
+            message: "Note created successfully",
+            noteId: noteRef.id
+        });
+
+    } catch (error) {
+        console.error("createNote error:", error);
+        res.status(500).json({ error: error.message });
+    }
 });
+
+/**
+ * deleteNote Function: Deletes a note by noteId
+ */
+exports.deleteNote = functions.https.onRequest(async (req, res) => {
+    try {
+        const { noteId } = req.body;
+
+        if (!noteId) {
+            return res.status(400).json({ message: "Missing required field: noteId" });
+        }
+
+        const noteRef = db.collection("notes").doc(noteId);
+        const noteDoc = await noteRef.get();
+
+        if (!noteDoc.exists) {
+            return res.status(404).json({ message: "Note not found" });
+        }
+
+        await noteRef.delete();
+
+        res.status(200).json({ message: "Note deleted successfully", noteId });
+
+    } catch (error) {
+        console.error("deleteNote error:", error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+
+
+
 
