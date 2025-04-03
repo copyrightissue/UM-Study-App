@@ -78,7 +78,8 @@ describe("loginUser", () => {
         expect(res.status).toHaveBeenCalledWith(200);
         expect(res.json).toHaveBeenCalledWith(expect.objectContaining({
             message: "Login successful",
-            idToken: "mocked-custom-token"
+            token: "mocked-custom-token",
+            uid: "12345"
         }));
     });
 
