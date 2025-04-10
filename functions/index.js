@@ -280,7 +280,36 @@ exports.deleteNote = functions.https.onRequest(async (req, res) => {
     }
 });
 
+/**
+ * getAllNotesForClass Function: Retrieves all notes associated with a specific course_code
+ */
+exports.getAllNotesForClass = functions.https.onRequest(async (req, res) => {
+    try {
+        const { course_code } = req.query;
 
+        if (!course_code) {
+            return res.status(400).json({ message: "Missing required search parameter: course_code" });
+        }
 
+        // Search notes collection for the specified course_code
+        const notesSnapshot = await db.collection("notes").where("course_code", "==", course_code).get();
+
+        if (notesSnapshot.empty) {
+            return res.status(200).json({ notes: [] });
+        }
+
+        // Map the notes to an array of objects
+        const notes = notesSnapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data()
+        }));
+
+        res.status(200).json({ notes });
+
+    } catch (error) {
+        console.error("getAllNotesForClass error:", error);
+        res.status(500).json({ error: error.message });
+    }
+});
 
 
