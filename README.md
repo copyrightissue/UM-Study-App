@@ -14,7 +14,7 @@ The problem we aim to solve with software is helping students study better. We a
 # Setup and Local Usage
 To run locally, first install the repository locally and then navigate to the root folder.  
 Then, navigate to `./um-study-app` and run `npm install`. This will prepare the required modules and packages.  
-Finally, run `npm start dev` in the same location to start a local development server.
+Finally, run `npm run dev` in the same location to start a local development server.
 
 # Target Users 
 The target users are students, professors, and TAs. 
