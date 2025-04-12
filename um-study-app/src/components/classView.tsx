@@ -1,15 +1,28 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import styles from "../styles/Home.module.css";
 import { useRouter } from "next/router";
 
 const ClassView: React.FC = () => {
   const router = useRouter();
 
-  // Dummy data for classes
-  const classes = [
-    { name: "Intro to CS", teacher: "Mr. Smith" },
-    { name: "Discrete Math", teacher: "Mrs. Johnson" },
-    { name: "Web Dev Basics", teacher: "Ms. Lee" }
-  ];
+  type SchoolClass = { name: string; course_code: string };
+  const [classes, setClasses] = useState<SchoolClass[]>([]);
+
+  useEffect(() => {
+    const fetchClasses = async () => {
+      try {
+        const response = await fetch("/api/getAllClasses");
+        const data = await response.json();
+        setClasses(data.classes || []);
+      } catch (err) {
+        console.error("Error fetching classes:", err);
+      }
+    };
+  
+    fetchClasses();
+  }, []);
+  
+
 
   // Dummy role (replace this with actual logic to determine the user's role)
   const role = "teacher"; // Change to "student" to test redirection for students
@@ -49,8 +62,8 @@ const ClassView: React.FC = () => {
               padding: "0.5rem 0",
               borderBottom: "1px solid #e5e7eb"
             }}>
-              <h2 style={{ color: "#2563eb", fontSize: "1.25rem" }}>{cls.name}</h2>
-              <p style={{ color: "#374151" }}>Teacher: {cls.teacher}</p>
+              <h2 style={{ color: "#2563eb", fontSize: "1.25rem" }}>{cls.course_code}</h2>
+              <p style={{ color: "#374151" }}>{cls.name}</p>
             </li>
           ))}
         </ul>
