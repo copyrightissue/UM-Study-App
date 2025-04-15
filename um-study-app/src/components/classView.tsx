@@ -8,8 +8,7 @@ const ClassView: React.FC = () => {
   const handleClick = (course_code: string) => {
     router.push(`${course_code}`);
   };
-
-
+  
   type SchoolClass = { name: string; course_code: string };
   const [classes, setClasses] = useState<SchoolClass[]>([]);
 
@@ -99,7 +98,6 @@ const ClassView: React.FC = () => {
                </p>
              </div>
            </li>
-           
           ))}
         </ul>
         {/* Add the button for redirection */}

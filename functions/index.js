@@ -21,27 +21,23 @@ exports.signupUser = functions.https.onRequest(async (req, res) => {
             return res.status(400).json({ message: "Missing required fields" });
         }
 
-        // Check if email already exists
         const userRecord = await admin.auth().getUserByEmail(email).catch(() => null);
         if (userRecord) {
             return res.status(400).json({ message: "Email already in use." });
         }
 
-        // Hash the password before storing it
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        // Create user in Firebase Authentication
         const user = await admin.auth().createUser({
             email,
             password,
             displayName: fullName
         });
 
-        // Store user profile in Firestore using user.uid as the document ID (key)
         await db.collection("users").doc(user.uid).set({
             fullName,
             studentID,
-            password: hashedPassword, // Store only hashed passwords
+            password: hashedPassword,
             classes,
             role
         });
@@ -54,9 +50,6 @@ exports.signupUser = functions.https.onRequest(async (req, res) => {
     }
 });
 
-/**
- * Login Function: Verifies Firebase Authentication Token
- */
 exports.loginUser = functions.https.onRequest(async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -65,13 +58,11 @@ exports.loginUser = functions.https.onRequest(async (req, res) => {
             return res.status(400).json({ message: "Email and password are required" });
         }
 
-        // Get user from Firebase Authentication
         const userRecord = await admin.auth().getUserByEmail(email);
         if (!userRecord) {
             return res.status(400).json({ message: "User not found." });
         }
 
-        // Get user profile from Firestore
         const userDoc = await db.collection("users").doc(userRecord.uid).get();
         if (!userDoc.exists) {
             return res.status(400).json({ message: "User profile not found." });
@@ -79,17 +70,13 @@ exports.loginUser = functions.https.onRequest(async (req, res) => {
 
         const userData = userDoc.data();
 
-        // Compare hashed password
         const passwordMatch = await bcrypt.compare(password, userData.password);
         if (!passwordMatch) {
             return res.status(401).json({ message: "Invalid password." });
         }
 
-        // Instead of generating a custom JWT, return Firebase's built-in authentication ID token adding somee
         const idToken = await admin.auth().createCustomToken(userRecord.uid);
-        const userUid = userRecord.uid; // Add user UID to response to use in client-side requests
-
-        res.status(200).json({ message: "Login successful", token: idToken, uid:userUid });
+        res.status(200).json({ message: "Login successful", token: idToken, uid: userRecord.uid });
 
     } catch (error) {
         console.error("Login error:", error);
@@ -97,9 +84,6 @@ exports.loginUser = functions.https.onRequest(async (req, res) => {
     }
 });
 
-/**
- * getUser Function: Requests a userID, returns a user object
- */
 exports.getUser = functions.https.onRequest(async (req, res) => {
     try {
         const { uid } = req.query;
@@ -109,13 +93,11 @@ exports.getUser = functions.https.onRequest(async (req, res) => {
         }
 
         const userDoc = await db.collection("users").doc(uid).get();
-
         if (!userDoc.exists) {
             return res.status(404).json({ message: "User not found" });
         }
 
-        const userData = userDoc.data();
-        res.status(200).json({ user: userData });
+        res.status(200).json({ user: userDoc.data() });
 
     } catch (error) {
         console.error("getUser error:", error);
@@ -123,9 +105,6 @@ exports.getUser = functions.https.onRequest(async (req, res) => {
     }
 });
 
-/**
- * isAuthenticated Function: Verifies user has a teacher role
- */
 exports.isAuthenticated = functions.https.onRequest(async (req, res) => {
     try {
         const { uid } = req.query;
@@ -134,20 +113,17 @@ exports.isAuthenticated = functions.https.onRequest(async (req, res) => {
             return res.status(400).json({ message: "Missing user ID (uid) in query params" });
         }
 
-        // Optionally: Verify the UID exists in Firebase Auth
         const userRecord = await admin.auth().getUser(uid).catch(() => null);
         if (!userRecord) {
             return res.status(401).json({ authenticated: false, message: "Invalid user ID" });
         }
 
-        // Get user role from Firestore
         const userDoc = await db.collection("users").doc(uid).get();
         if (!userDoc.exists) {
             return res.status(404).json({ authenticated: false, message: "User profile not found" });
         }
 
         const { role } = userDoc.data();
-
         const isTeacher = role && role.toLowerCase() === 'teacher';
 
         return res.status(200).json({ authenticated: isTeacher });
@@ -158,9 +134,6 @@ exports.isAuthenticated = functions.https.onRequest(async (req, res) => {
     }
 });
 
-/**
- * getAllClasses Function: Gets all classes in "classes" container
- */
 exports.getAllClasses = functions.https.onRequest(async (req, res) => {
     try {
         const classesSnapshot = await db.collection("classes").get();
@@ -182,9 +155,6 @@ exports.getAllClasses = functions.https.onRequest(async (req, res) => {
     }
 });
 
-/**
- * createClass Function: Requests a class object, creates a class in the "classes" container
- */
 exports.createClass = functions.https.onRequest(async (req, res) => {
     try {
         const { uid, name, course_code } = req.body;
@@ -193,7 +163,6 @@ exports.createClass = functions.https.onRequest(async (req, res) => {
             return res.status(400).json({ message: "Missing required fields: uid, name, or course_code" });
         }
 
-        // Get the user profile from Firestore
         const userDoc = await db.collection("users").doc(uid).get();
         if (!userDoc.exists) {
             return res.status(404).json({ message: "User not found" });
@@ -201,21 +170,13 @@ exports.createClass = functions.https.onRequest(async (req, res) => {
 
         const { role } = userDoc.data();
 
-        // Only allow teachers to create classes
         if (!role || role.toLowerCase() !== "teacher") {
             return res.status(403).json({ message: "Only teachers can create classes." });
         }
 
-        // Add class to 'classes' collection
-        const classRef = await db.collection("classes").add({
-            name,
-            course_code
-        });
+        const classRef = await db.collection("classes").add({ name, course_code });
 
-        res.status(201).json({
-            message: "Class created successfully",
-            classId: classRef.id
-        });
+        res.status(201).json({ message: "Class created successfully", classId: classRef.id });
 
     } catch (error) {
         console.error("createClass error:", error);
@@ -223,9 +184,6 @@ exports.createClass = functions.https.onRequest(async (req, res) => {
     }
 });
 
-/**
- * createNote Function: Creates a new note associated with a course_code
- */
 exports.createNote = functions.https.onRequest(async (req, res) => {
     try {
         const { title, contents, course_code } = req.body;
@@ -238,7 +196,9 @@ exports.createNote = functions.https.onRequest(async (req, res) => {
             title,
             contents,
             course_code,
-            createdAt: Timestamp.now()
+            upvotes: 0,
+            downvotes: 0,
+            votecount: 0
         });
 
         res.status(201).json({
@@ -252,9 +212,6 @@ exports.createNote = functions.https.onRequest(async (req, res) => {
     }
 });
 
-/**
- * deleteNote Function: Deletes a note by noteId
- */
 exports.deleteNote = functions.https.onRequest(async (req, res) => {
     try {
         const { noteId } = req.body;
@@ -270,9 +227,17 @@ exports.deleteNote = functions.https.onRequest(async (req, res) => {
             return res.status(404).json({ message: "Note not found" });
         }
 
-        await noteRef.delete();
+        const votersSnapshot = await noteRef.collection("voters").get();
+        const batch = db.batch();
 
-        res.status(200).json({ message: "Note deleted successfully", noteId });
+        votersSnapshot.forEach(doc => {
+            batch.delete(doc.ref);
+        });
+
+        batch.delete(noteRef);
+        await batch.commit();
+
+        res.status(200).json({ message: "Note and associated votes deleted", noteId });
 
     } catch (error) {
         console.error("deleteNote error:", error);
@@ -280,9 +245,60 @@ exports.deleteNote = functions.https.onRequest(async (req, res) => {
     }
 });
 
-/**
- * getAllNotesForClass Function: Retrieves all notes associated with a specific course_code
- */
+
+exports.voteNote = functions.https.onRequest(async (req, res) => {
+    try {
+        const { noteId, userId, voteType } = req.body;
+
+        if (!noteId || !userId || !["up", "down"].includes(voteType)) {
+            return res.status(400).json({ message: "Missing or invalid fields" });
+        }
+
+        const noteRef = db.collection("notes").doc(noteId);
+        const voterRef = noteRef.collection("voters").doc(userId);
+
+        const [noteSnap, voterSnap] = await Promise.all([
+            noteRef.get(),
+            voterRef.get()
+        ]);
+
+        if (!noteSnap.exists) {
+            return res.status(404).json({ message: "Note not found" });
+        }
+
+        let upvotes = noteSnap.data().upvotes || 0;
+        let downvotes = noteSnap.data().downvotes || 0;
+
+        if (!voterSnap.exists) {
+            await voterRef.set({ votetype: voteType });
+            if (voteType === "up") upvotes++;
+            if (voteType === "down") downvotes++;
+        } else {
+            const prevVote = voterSnap.data().votetype;
+            if (prevVote === voteType) {
+                return res.status(200).json({ message: "Vote unchanged" });
+            }
+
+            await voterRef.update({ votetype: voteType });
+
+            if (prevVote === "up") upvotes--;
+            if (prevVote === "down") downvotes--;
+            if (voteType === "up") upvotes++;
+            if (voteType === "down") downvotes++;
+        }
+
+        const votecount = upvotes - downvotes;
+
+        await noteRef.update({ upvotes, downvotes, votecount });
+
+        res.status(200).json({ message: "Vote recorded", upvotes, downvotes, votecount });
+
+    } catch (error) {
+        console.error("voteNote error:", error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
 exports.getAllNotesForClass = functions.https.onRequest(async (req, res) => {
     try {
         const { course_code } = req.query;
@@ -291,18 +307,17 @@ exports.getAllNotesForClass = functions.https.onRequest(async (req, res) => {
             return res.status(400).json({ message: "Missing required search parameter: course_code" });
         }
 
-        // Search notes collection for the specified course_code
         const notesSnapshot = await db.collection("notes").where("course_code", "==", course_code).get();
 
         if (notesSnapshot.empty) {
             return res.status(200).json({ notes: [] });
         }
 
-        // Map the notes to an array of objects
         const notes = notesSnapshot.docs.map(doc => ({
             id: doc.id,
             ...doc.data()
         }));
+
 
         res.status(200).json({ notes });
 
@@ -311,5 +326,3 @@ exports.getAllNotesForClass = functions.https.onRequest(async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
-
-
