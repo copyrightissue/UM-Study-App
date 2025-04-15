@@ -10,6 +10,12 @@ admin.initializeApp();
 const db = admin.firestore();
 const Timestamp = admin.firestore.Timestamp;
 
+
+exports.helloWorld = functions.https.onRequest((req, res) => { // LOAD BEARING FUNC, DON'T REMOVE THIS:
+    res.send("Hello, World!");});                              // Removing this (while deprecated)
+                                                               // requires further work on the firebase side
+                                                               // such work isn't worth the effort right now.
+
 /**
  * Signup Function: Creates a user in Firebase Auth and stores their profile in Firestore
  */
