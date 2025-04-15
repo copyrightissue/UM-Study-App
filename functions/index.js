@@ -245,6 +245,7 @@ exports.deleteNote = functions.https.onRequest(async (req, res) => {
     }
 });
 
+
 exports.voteNote = functions.https.onRequest(async (req, res) => {
     try {
         const { noteId, userId, voteType } = req.body;
@@ -316,6 +317,7 @@ exports.getAllNotesForClass = functions.https.onRequest(async (req, res) => {
             id: doc.id,
             ...doc.data()
         }));
+
 
         res.status(200).json({ notes });
 
