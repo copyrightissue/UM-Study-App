@@ -238,7 +238,9 @@ exports.createNote = functions.https.onRequest(async (req, res) => {
             title,
             contents,
             course_code,
-            createdAt: Timestamp.now()
+            upvotes: 0,
+            downvotes: 0,
+            votecount: 0
         });
 
         res.status(201).json({
@@ -270,15 +272,95 @@ exports.deleteNote = functions.https.onRequest(async (req, res) => {
             return res.status(404).json({ message: "Note not found" });
         }
 
-        await noteRef.delete();
+        // Delete voters subcollection
+        const votersSnapshot = await noteRef.collection("voters").get();
+        const batch = db.batch();
 
-        res.status(200).json({ message: "Note deleted successfully", noteId });
+        votersSnapshot.forEach(doc => {
+            batch.delete(doc.ref);
+        });
+
+        // Delete note document
+        batch.delete(noteRef);
+
+        await batch.commit();
+
+        res.status(200).json({ message: "Note and associated votes deleted", noteId });
 
     } catch (error) {
         console.error("deleteNote error:", error);
         res.status(500).json({ error: error.message });
     }
 });
+
+exports.voteNote = functions.https.onRequest(async (req, res) => {
+    try {
+        const { noteId, userId, voteType } = req.body;
+
+        if (!noteId || !userId || !["up", "down"].includes(voteType)) {
+            return res.status(400).json({ message: "Missing or invalid fields" });
+        }
+
+        const noteRef = db.collection("notes").doc(noteId);
+        const voterRef = noteRef.collection("voters").doc(userId);
+
+        const [noteSnap, voterSnap] = await Promise.all([
+            noteRef.get(),
+            voterRef.get()
+        ]);
+
+        if (!noteSnap.exists) {
+            return res.status(404).json({ message: "Note not found" });
+        }
+
+        let upvotes = noteSnap.data().upvotes || 0;
+        let downvotes = noteSnap.data().downvotes || 0;
+
+        if (!voterSnap.exists) {
+            // 🆕 First-time vote
+            await voterRef.set({ votetype: voteType });
+
+            if (voteType === "up") upvotes++;
+            if (voteType === "down") downvotes++;
+        } else {
+            const prevVote = voterSnap.data().votetype;
+
+            if (prevVote === voteType) {
+                return res.status(200).json({ message: "Vote unchanged" });
+            }
+
+            // 🔁 Flip vote
+            await voterRef.update({ votetype: voteType });
+
+            if (prevVote === "up") upvotes--;
+            if (prevVote === "down") downvotes--;
+
+            if (voteType === "up") upvotes++;
+            if (voteType === "down") downvotes++;
+        }
+
+        const votecount = upvotes - downvotes;
+
+        await noteRef.update({
+            upvotes,
+            downvotes,
+            votecount
+        });
+
+        res.status(200).json({
+            message: "Vote recorded",
+            upvotes,
+            downvotes,
+            votecount
+        });
+
+    } catch (error) {
+        console.error("voteNote error:", error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+
 
 
 
