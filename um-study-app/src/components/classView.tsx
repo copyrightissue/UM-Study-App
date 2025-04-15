@@ -5,6 +5,11 @@ import { useRouter } from "next/router";
 const ClassView: React.FC = () => {
   const router = useRouter();
 
+  const handleClick = (course_code: string) => {
+    router.push(`${course_code}`);
+  };
+
+
   type SchoolClass = { name: string; course_code: string };
   const [classes, setClasses] = useState<SchoolClass[]>([]);
 
@@ -58,13 +63,43 @@ const ClassView: React.FC = () => {
         </h1>
         <ul style={{ listStyle: "none", padding: 0, color: "#4b5563" }}>
           {classes.map((cls, i) => (
-            <li key={i} style={{
-              padding: "0.5rem 0",
-              borderBottom: "1px solid #e5e7eb"
-            }}>
-              <h2 style={{ color: "#2563eb", fontSize: "1.25rem" }}>{cls.course_code}</h2>
-              <p style={{ color: "#374151" }}>{cls.name}</p>
-            </li>
+             <li  
+             key={cls.course_code}
+             style={{
+               padding: "1rem 0",
+               borderBottom: "1px solid #e5e7eb",
+               margin: "1rem 0"
+             }}
+           >
+             <div>
+               <h2
+                 onClick={() => handleClick(cls.course_code)}
+                 style={{
+                   color: "#2563eb",
+                   fontSize: "1.25rem",
+                   cursor: "pointer",
+                   display: "inline-block",
+                   marginBottom: "0.5rem" // space below the heading
+                 }}
+               >
+                 {cls.course_code}
+               </h2>
+             </div>
+             <div>
+               <p
+                 onClick={() => handleClick(cls.course_code)}
+                 style={{
+                   color: "#374151",
+                   cursor: "pointer",
+                   display: "inline-block",
+                   margin: 0
+                 }}
+               >
+                 {cls.name}
+               </p>
+             </div>
+           </li>
+           
           ))}
         </ul>
         {/* Add the button for redirection */}
