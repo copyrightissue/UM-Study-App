@@ -48,6 +48,22 @@
       {
         "source": "/api/helloWorld",
         "function": "helloWorld"
+      },
+      {
+        "source": "/api/createNote",
+        "function": "createNote"
+      },
+      {
+        "source": "/api/deleteNote",
+        "function": "deleteNote"
+      },
+      {
+        "source": "/api/voteNote",
+        "function": "voteNote"
+      },
+      {
+        "source": "getAllNotesForClass",
+        "function": "getAllNotesForClass"
       }
     ]
   },
