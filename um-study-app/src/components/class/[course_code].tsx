@@ -23,7 +23,7 @@ const ClassPage: React.FC<Props> = ({ course_code }) => {
   });
   const [status, setStatus] = useState("");
 
-  const userID = "exampleUser123";
+  const userID = typeof window !== "undefined" ? localStorage.getItem("uid") : null;
 
   const fetchNotes = async () => {
     try {
@@ -79,16 +79,26 @@ const ClassPage: React.FC<Props> = ({ course_code }) => {
     }
   };
 
-  const handleVote = async (noteId: string, votetype: "up" | "down") => {
+  // inside ClassPage.tsx
+  const userId = "exampleUser123";   // use camelCase to match the function
+
+  const handleVote = async (noteId: string, voteType: "up" | "down") => {
+    if (!userId) {
+      console.error("User ID is not available");
+      return;
+    }
     try {
       const res = await fetch("/api/voteNote", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ noteId, userID, votetype }),
+        body: JSON.stringify({ noteId, userId, voteType })   // <- exact names
       });
 
-      if (!res.ok) throw new Error("Vote failed");
-      fetchNotes();
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.message || "Vote failed");
+      }
+      fetchNotes();          // refresh counts
     } catch (err) {
       console.error("Voting error:", err);
     }
@@ -134,11 +144,11 @@ const ClassPage: React.FC<Props> = ({ course_code }) => {
             <h3>{note.title}</h3>
             <p>{note.contents}</p>
             <small>By {note.author}</small>
-            <div style={{ marginTop: "0.5rem" }}>
+            <div style={{marginTop: "0.5rem"}}>
+
               <button onClick={() => handleVote(note.id, "up")}>👍 {note.upvotes}</button>
-              <button onClick={() => handleVote(note.id, "down")} style={{ marginLeft: "1rem" }}>
-                👎 {note.downvotes}
-              </button>
+              <button onClick={() => handleVote(note.id, "down")} style={{marginLeft: "1rem"}}>👎 {note.downvotes}</button>
+
             </div>
           </div>
         ))}

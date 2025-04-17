@@ -38,7 +38,7 @@ const StudyBuddyLogin = () => {
       if (data.user?.role === "teacher") {
         router.push("/dashboard-teacher.html");
       } else {
-        router.push("/dashboard-teacher.html");
+        router.push("/dashboard-student.html");
       }
 
     } catch (err) {
