@@ -102,6 +102,21 @@ const ClassPage: React.FC<Props> = ({ course_code }) => {
     }
   };
 
+  const handleDelete = async (noteId: string) => {
+    try {
+      const res = await fetch("/api/deleteNote", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ noteId }),
+      });
+
+      if (!res.ok) throw new Error("Delete failed");
+      fetchNotes();
+    } catch (err) {
+      console.error("Delete error:", err);
+    }
+  };
+
   useEffect(() => {
     fetchNotes();
   }, [course_code]);
@@ -137,19 +152,67 @@ const ClassPage: React.FC<Props> = ({ course_code }) => {
         {status && <p className={styles.link}>{status}</p>}
 
         <h2 className={styles.label} style={{ marginTop: "2rem" }}>📚 Existing Notes</h2>
-        {notes.map((note) => (
-          <div key={note.id} style={{ marginBottom: "1.5rem", borderBottom: "1px solid #e5e7eb", paddingBottom: "1rem" }}>
-            <h3>{note.title}</h3>
-            <p>{note.contents}</p>
-            <small>By {note.author}</small>
-            <div style={{marginTop: "0.5rem"}}>
-
-              <button onClick={() => handleVote(note.id, "up")}>👍 {note.upvotes}</button>
-              <button onClick={() => handleVote(note.id, "down")} style={{marginLeft: "1rem"}}>👎 {note.downvotes}</button>
-
+        <div style={{ marginTop: "1rem" }}>
+          {notes.map((note) => (
+            <div
+              key={note.id}
+              style={{
+                marginBottom: "1.5rem",
+                border: "1px solid #e5e7eb",
+                borderRadius: "8px",
+                padding: "1rem",
+                backgroundColor: "#f9fafb",
+                boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+              }}
+            >
+              <h3 style={{ color: "#3b82f6", marginBottom: "0.5rem" }}>{note.title}</h3>
+              <p style={{ marginBottom: "0.5rem" }}>{note.contents}</p>
+              <small style={{ display: "block", marginBottom: "0.5rem" }}>By {note.author}</small>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <div>
+                  <button
+                    onClick={() => handleVote(note.id, "up")}
+                    style={{
+                      backgroundColor: "#e0f2fe",
+                      border: "none",
+                      borderRadius: "4px",
+                      padding: "0.5rem 1rem",
+                      cursor: "pointer",
+                      marginRight: "0.5rem",
+                    }}
+                  >
+                    👍 {note.upvotes}
+                  </button>
+                  <button
+                    onClick={() => handleVote(note.id, "down")}
+                    style={{
+                      backgroundColor: "#fee2e2",
+                      border: "none",
+                      borderRadius: "4px",
+                      padding: "0.5rem 1rem",
+                      cursor: "pointer",
+                    }}
+                  >
+                    👎 {note.downvotes}
+                  </button>
+                </div>
+                <button
+                  onClick={() => handleDelete(note.id)}
+                  style={{
+                    backgroundColor: "#f87171",
+                    color: "white",
+                    border: "none",
+                    borderRadius: "4px",
+                    padding: "0.5rem 1rem",
+                    cursor: "pointer",
+                  }}
+                >
+                  Delete
+                </button>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
   );
