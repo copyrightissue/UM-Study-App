@@ -62,7 +62,7 @@
         "function": "voteNote"
       },
       {
-        "source": "getAllNotesForClass",
+        "source": "/api/getAllNotesForClass",
         "function": "getAllNotesForClass"
       }
     ]
