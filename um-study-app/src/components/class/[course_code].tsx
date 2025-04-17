@@ -40,6 +40,12 @@ const ClassPage: React.FC<Props> = ({ course_code }) => {
       console.error("Failed to fetch notes:", err);
     }
   };
+  // Fetch notes every 10 seconds / this is our observer
+  useEffect(() => {
+    fetchNotes();                // initial
+    const id = setInterval(fetchNotes, 10_000); // every 10 s
+    return () => clearInterval(id);
+  }, [course_code]);
 
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
