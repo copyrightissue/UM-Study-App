@@ -27,13 +27,19 @@ const ClassPage: React.FC<Props> = ({ course_code }) => {
 
   const fetchNotes = async () => {
     try {
-      const response = await fetch(`/api/getAllNotesForClass?course_code=${course_code}`);
-      const data = await response.json();
-      setNotes(data.notes || []);
+      const resp = await fetch(
+          `/api/getAllNotesForClass?course_code=${encodeURIComponent(course_code)}`
+      );
+      if (!resp.ok) {
+        throw new Error(`HTTP ${resp.status}`);
+      }
+      const { notes = [] } = await resp.json();   // function returns { notes: [...] }
+      setNotes(notes);
     } catch (err) {
       console.error("Failed to fetch notes:", err);
     }
   };
+
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
