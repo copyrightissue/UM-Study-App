@@ -23,7 +23,7 @@ const ClassPage: React.FC<Props> = ({ course_code }) => {
   });
   const [status, setStatus] = useState("");
 
-  const userID = typeof window !== "undefined" ? localStorage.getItem("uid") : null;
+  const userId = typeof window !== "undefined" ? localStorage.getItem("uid") : null;
 
   const fetchNotes = async () => {
     try {
@@ -79,8 +79,6 @@ const ClassPage: React.FC<Props> = ({ course_code }) => {
     }
   };
 
-  // inside ClassPage.tsx
-  const userId = "exampleUser123";   // use camelCase to match the function
 
   const handleVote = async (noteId: string, voteType: "up" | "down") => {
     if (!userId) {
