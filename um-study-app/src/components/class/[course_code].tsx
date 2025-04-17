@@ -34,6 +34,7 @@ const ClassPage: React.FC<Props> = ({ course_code }) => {
         throw new Error(`HTTP ${resp.status}`);
       }
       const { notes = [] } = await resp.json();   // function returns { notes: [...] }
+      notes.sort((a: any, b: any) => b.upvotes - a.upvotes);
       setNotes(notes);
     } catch (err) {
       console.error("Failed to fetch notes:", err);
