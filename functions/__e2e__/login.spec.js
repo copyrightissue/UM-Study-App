@@ -15,7 +15,7 @@ test('User can log in', async ({ page }) => {
 
 
     // Go to the login page
-    await page.goto('https://studybuddy-1b01f.web.app');
+    await page.goto('http://localhost:5000');
 
     // Fill out the login form
     await page.fill('input[name="email"]', email);
@@ -24,9 +24,7 @@ test('User can log in', async ({ page }) => {
     // Click the login button
     await page.click('button[type="submit"]');
 
-    // Wait for successful login redirection
-    await page.waitForURL('**/dashboard-teacher.html', { timeout: 5000 });
+    await page.waitForURL('**/dashboard-student.html');
+    await expect(page).toHaveURL(/dashboard-student\.html/);
 
-    // Verify login success
-    await expect(page).toHaveURL(/dashboard-teacher\.html/);
 });

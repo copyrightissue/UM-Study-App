@@ -15,7 +15,7 @@ test('User can create a new class', async ({ page }) => {
 
 
     // Go to the login page
-    await page.goto('https://studybuddy-1b01f.web.app');
+    await page.goto('http://localhost:5000');
 
     // Fill out the login form
     await page.fill('input[name="email"]', email);
@@ -24,13 +24,45 @@ test('User can create a new class', async ({ page }) => {
     // Click the login button
     await page.click('button[type="submit"]');
 
-    // Wait for successful login redirection
-    await page.waitForURL('**/dashboard-teacher.html', { timeout: 5000 });
 
-    // Verify login success
-    await expect(page).toHaveURL(/dashboard-teacher\.html/);
+    await page.waitForURL('**/dashboard-student.html');
+    await expect(page).toHaveURL(/dashboard-student\.html/);
 
-    await page.click('text="Create New Class"');
-    await page.fill('input[name="course_code"]', "CSCI" + String(email).slice(2,5));
-    await page.fill('input[name="name"]', "TestClass");
+    await page.reload();
+    
+
+    await page.click('button:has-text("View All Classes")'); // Click the "View All Classes" button
+ 
+    await page.click('button:has-text("Go to Dashboard")'); // Click the "Go to Dashboard" button
+    
+    await page.click('button:has-text("Create New Class")'); // Click the "Create Class" button
+
+    // Function to generate a random 3-letter course code
+    function generateRandomCourseCode() {
+        const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        const numbers = '0123456789';
+        const randomLetters = Array.from({ length: 3 }, () => letters[Math.floor(Math.random() * letters.length)]).join('');
+        const randomNumbers = Array.from({ length: 3 }, () => numbers[Math.floor(Math.random() * numbers.length)]).join('');
+        return randomLetters + randomNumbers;
+    }
+
+    // Function to generate a random class name
+    function generateRandomClassName() {
+        const classNames = ['Math', 'Science', 'History', 'Art', 'Biology', 'Physics', 'Chemistry'];
+        return classNames[Math.floor(Math.random() * classNames.length)];
+    }
+
+    // Loop to generate and fill the form
+    for (let i = 0; i < 1; i++) { // Adjust the loop count if you need multiple classes
+        const courseCode = generateRandomCourseCode();
+        const className = generateRandomClassName();
+
+        // Fill out the class form
+        console.log(`Filling out form for class: ${className}, Course Code: ${courseCode}`);
+        await page.fill('input[name="course_code"]', courseCode);
+        await page.fill('input[name="name"]', className);
+
+        // Submit the form (if applicable)
+        await page.click('button[type="submit"]'); // Adjust selector if needed
+    }
 });
