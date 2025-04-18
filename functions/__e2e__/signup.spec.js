@@ -19,7 +19,7 @@ test('User can sign up', async ({ page }) => {
     const password = 'TestPassword123!';
 
     // Go to the signup page
-    await page.goto('https://studybuddy-1b01f.web.app');
+    await page.goto('http://localhost:5000');
 
      // Navigate to the sign in spage
     await page.click('text="New Account"');
@@ -30,6 +30,12 @@ test('User can sign up', async ({ page }) => {
     await page.fill('input[name="email"]', email);
     await page.fill('input[name="password"]', password);
 
+    // Select "Teacher" from the dropdown
+    await page.selectOption('select[name="role"]', 'teacher');
+    // Verify the selection
+    const selectedValue = await page.$eval('select[name="role"]', el => el.value);
+    expect(selectedValue).toBe('teacher');
+
     // Click the signup button
     await page.click('button[type="submit"]');
 
@@ -38,6 +44,6 @@ test('User can sign up', async ({ page }) => {
     // Save credentials to a file for later login
     fs.writeFileSync(credentialsFile, JSON.stringify({ email, password }));
 
-    console.log(`✅ Signed up with: ${fullName}, NetID: ${netID}, Email: ${email}`);
+    console.log(`✅ Signed up with: ${fullName}, Password: ${password}, Email: ${email}`);
 });
 
